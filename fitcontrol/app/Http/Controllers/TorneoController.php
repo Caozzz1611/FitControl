@@ -2,65 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Torneo;
-use App\Models\Equipo;
+use App\Models\Entrenamiento;
+use App\Models\Rendimiento;
 use Illuminate\Http\Request;
 
-class TorneoController extends Controller
+class RendimientoController extends Controller
 {
-    public function index()
-    {
-        $torneos = Torneo::with('equipo')->get();
-        return view('torneo.index', compact('torneos'));
-    }
-
+    // Mostrar el formulario para crear un nuevo rendimiento
     public function create()
     {
-        $equipos = Equipo::all();
-        return view('torneo.create', compact('equipos'));
+        // Traer todos los entrenamientos para el select
+        $entrenamientos = Entrenamiento::all();
+
+        // Retornar la vista con la variable
+        return view('rendimiento.form', compact('entrenamientos'));
     }
 
+    // Guardar un nuevo rendimiento
     public function store(Request $request)
     {
+        // Validar los datos recibidos
         $request->validate([
-            'nombre' => 'required|string|max:100',
-            'premio' => 'required|numeric',
-            'descripcion' => 'nullable|string|max:200',
-            'fecha_inicio' => 'required|date',
-            'fecha_fin' => 'required|date',
-            'id_equipo_fk' => 'required|exists:EQUIPO,id_equipo',
+            'id_entrenamiento_fk' => 'required|exists:entrenamientos,id_entrenamiento',
+            // Agrega aquí las otras validaciones según tu tabla rendimiento
+            // Ejemplo:
+            //'campo1' => 'required|string',
+            //'campo2' => 'numeric',
         ]);
 
-        Torneo::create($request->all());
+        // Crear el rendimiento con los datos del request
+        Rendimiento::create($request->all());
 
-        return redirect()->route('torneo.index')->with('success', 'Torneo creado correctamente.');
+        // Redireccionar a donde quieras con mensaje
+        return redirect()->route('rendimiento.index')->with('success', 'Rendimiento creado correctamente.');
     }
 
-    public function edit(Torneo $torneo)
+    // Opcional: método para listar rendimientos
+    public function index()
     {
-        $equipos = Equipo::all();
-        return view('torneo.edit', compact('torneo', 'equipos'));
-    }
-
-    public function update(Request $request, Torneo $torneo)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'premio' => 'required|numeric',
-            'descripcion' => 'nullable|string|max:200',
-            'fecha_inicio' => 'required|date',
-            'fecha_fin' => 'required|date',
-            'id_equipo_fk' => 'required|exists:EQUIPO,id_equipo',
-        ]);
-
-        $torneo->update($request->all());
-
-        return redirect()->route('torneo.index')->with('success', 'Torneo actualizado correctamente.');
-    }
-
-    public function destroy(Torneo $torneo)
-    {
-        $torneo->delete();
-        return redirect()->route('torneo.index')->with('success', 'Torneo eliminado correctamente.');
+        $rendimientos = Rendimiento::with('entrenamiento')->get();
+        return view('rendimiento.index', compact('rendimientos'));
     }
 }

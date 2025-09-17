@@ -40,10 +40,10 @@
     <a href="{{ route('equipo.index') }}" class="submenu-item"><i class="fa-solid fa-users"></i> Equipo</a>
     <a href="{{ route('torneo.index') }}" class="submenu-item"><i class="fa-solid fa-trophy"></i> Torneo</a>
     <a href="{{ route('partido.index') }}" class="submenu-item"><i class="fa-solid fa-futbol"></i> Partido</a>
-    <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-chart-line"></i> Estadistica Partido</a>
-    <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-dumbbell"></i> Entrenamiento</a>
-    <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-award"></i> Rendimiento</a>
-    <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-money-bill-wave"></i> Pago</a>
+    <a href="{{ route('estadistica_partido.index') }}" class="submenu-item"><i class="fa-solid fa-chart-line"></i> Estadistica Partido</a>
+    <a href="{{ route('entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-dumbbell"></i> Entrenamiento</a>
+    <a href="{{ route('rendimiento.index') }}" class="submenu-item"><i class="fa-solid fa-award"></i> Rendimiento</a>
+    <a href="{{ route('pago.index') }}" class="submenu-item"><i class="fa-solid fa-money-bill-wave"></i> Pago</a>
     <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-calendar-check"></i> Asistencia Entrenamiento</a>
     <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-pen-to-square"></i> Inscripcion</a>
     <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-users-gear"></i> Inscripcion Equipo</a>

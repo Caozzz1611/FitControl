@@ -9,6 +9,11 @@ use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\TorneoController;
 use App\Http\Controllers\PartidoController;
 use App\Http\Controllers\CalendarioController;
+use App\Http\Controllers\EstadisticaPartidoController;
+use App\Http\Controllers\EntrenamientoController;
+use App\Http\Controllers\RendimientoController;
+use App\Http\Controllers\PagoController;
+
 
 
 
@@ -86,7 +91,6 @@ Route::middleware(['auth'])->group(function () {
 use App\Http\Middleware\RoleMiddleware; // Asegúrate de importar tu clase
 
 Route::middleware(['auth'])->group(function () {
-    // Asigna el middleware 'role' a una ruta
 
 Route::get('/admin', function () {
     return view('dashboard');
@@ -100,8 +104,6 @@ Route::get('/admin', function () {
         })->name('dashboard.jugador');
     });
 
-    // En tu archivo routes/web.php
-
 Route::get('/entrenador', function () {
     return view('entrenador.dashboard');
 })->name('entrenador.dashboard');
@@ -110,3 +112,12 @@ Route::get('/entrenador', function () {
 
 
 
+Route::resource('estadistica_partido', EstadisticaPartidoController::class);
+
+
+Route::resource('entrenamiento', EntrenamientoController::class);
+
+
+Route::resource('rendimiento', RendimientoController::class);
+
+Route::resource('pago', PagoController::class);
