@@ -21,7 +21,7 @@
         <img src="img/userrm.png" alt="usuario">
         <div class="info">
           <strong>Berick Zambrano</strong><br>
-          Desarrollador Web
+          Administrador
         </div>
       </div>
       <img height="170px" width="170px" src="{{ asset('img/logo.png') }}" alt="Logo de FitControl">
@@ -61,8 +61,9 @@
     </div>
 
     <div class="bottom">
-      <div class="menu-item"><i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span></div>
-      <div class="toggle-theme">
+<a href="{{ route('logout') }}" class="menu-item">
+    <i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span>
+</a>      <div class="toggle-theme">
         <i class="fas fa-moon"></i><span>Modo Oscuro</span>
         <label class="switch">
           <input type="checkbox" id="theme-toggle">

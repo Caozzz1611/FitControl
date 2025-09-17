@@ -53,7 +53,60 @@ Route::get('/calendario/eventos', [CalendarioController::class, 'eventos'])->nam
 
 
 
+use App\Http\Controllers\AuthController;
 
+Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+/* // Rutas protegidas por el middleware 'auth'
+Route::middleware(['auth'])->group(function () {
+
+    // Grupo de rutas para el rol 'admin'
+  
+
+    // Grupo de rutas para el rol 'jugador'
+    Route::middleware(['role:jugador'])->group(function () {
+        Route::get('/jugador', function () {
+            return "Bienvenido Jugador";
+        })->name('dashboard.jugador');
+    });
+
+    // Grupo de rutas para el rol 'entrenador'
+    Route::middleware(['role:entrenador'])->group(function () {
+        Route::get('/entrenador', function () {
+            return "Bienvenido Entrenador";
+        })->name('dashboard.entrenador');
+    });
+
+}); */
+
+
+use App\Http\Middleware\RoleMiddleware; // Asegúrate de importar tu clase
+
+Route::middleware(['auth'])->group(function () {
+    // Asigna el middleware 'role' a una ruta
+
+Route::get('/admin', function () {
+    return view('dashboard');
+})->name('dashboard');
+
+
+    // O, mejor, usa una cadena de alias si lo prefieres
+    Route::middleware([RoleMiddleware::class . ':jugador'])->group(function () {
+        Route::get('/jugador', function () {
+            return "Bienvenido Jugador";
+        })->name('dashboard.jugador');
+    });
+
+    // En tu archivo routes/web.php
+
+Route::get('/entrenador', function () {
+    return view('entrenador.dashboard');
+})->name('entrenador.dashboard');
+
+});
 
 
 

@@ -111,9 +111,9 @@ function togglePassword() {
 </div>
 
 <div class="form-group">
-    <label>Equipo Asociado</label>
+    <label>Organizador</label>
     <select name="id_equipo_fk">
-        <option value="">-- Selecciona un equipo --</option>
+        <option value="">-- Selecciona un Organizador --</option>
         @foreach($equipos as $equipo)
             <option value="{{ $equipo->id_equipo }}" {{ old('id_equipo_fk', optional($torneo)->id_equipo_fk) == $equipo->id_equipo ? 'selected' : '' }}>
                 {{ $equipo->nombre_equipo }}

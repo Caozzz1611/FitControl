@@ -44,7 +44,7 @@
                 <th>Descripción</th>
                 <th>Fecha Inicio</th>
                 <th>Fecha Fin</th>
-                <th>Equipo Asociado</th>
+                <th>Organizador Asociad</th>
                 <th>Acciones</th>
             </tr>
         </thead>
