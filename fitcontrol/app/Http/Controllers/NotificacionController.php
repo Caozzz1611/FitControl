@@ -15,10 +15,12 @@ class NotificacionController extends Controller
     }
 
     public function create()
-    {
-        $usuarios = Usuario::all();
-        return view('notificaciones.create', compact('usuarios'));
-    }
+{
+    // Puede que necesites pasar datos a la vista, como usuarios
+    $usuarios = Usuario::all(); // o como lo tengas
+    return view('notificaciones.create', compact('usuarios'));
+}
+
 
     public function store(Request $request)
     {

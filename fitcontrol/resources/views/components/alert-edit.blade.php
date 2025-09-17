@@ -1,21 +1,22 @@
 @props(['buttonId'])
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const btn = document.getElementById("{{ $buttonId }}");
-        if(btn) {
+        const btn = document.getElementById(@json($buttonId));
+        if (btn) {
             btn.addEventListener('click', function(e) {
-                e.preventDefault(); // detener el link por defecto
+                e.preventDefault();
+                const href = btn.getAttribute('href');
                 Swal.fire({
-                    title: 'Editar registro',
-                    text: 'Vas a editar este registro',
-                    icon: 'info',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Continuar'
-                }).then(() => {
-                    // redirige al href del link después de confirmar
-                    window.location.href = btn.getAttribute('href');
+                    title: '¿Quieres editar este registro?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, editar',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = href;
+                    }
                 });
             });
         }

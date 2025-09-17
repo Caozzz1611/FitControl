@@ -44,9 +44,9 @@
     <a href="{{ route('entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-dumbbell"></i> Entrenamiento</a>
     <a href="{{ route('rendimiento.index') }}" class="submenu-item"><i class="fa-solid fa-award"></i> Rendimiento</a>
     <a href="{{ route('pago.index') }}" class="submenu-item"><i class="fa-solid fa-money-bill-wave"></i> Pago</a>
-    <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-calendar-check"></i> Asistencia Entrenamiento</a>
-    <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-pen-to-square"></i> Inscripcion</a>
-    <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-users-gear"></i> Inscripcion Equipo</a>
+    <a href="{{ route('asistencia_entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-calendar-check"></i> Asistencia Entrenamiento</a>
+    <a href="{{ route('inscripcion.index') }}" class="submenu-item"><i class="fa-solid fa-pen-to-square"></i> Inscripcion</a>
+    <a href="{{ route('inscripcion_equipo.index') }}" class="submenu-item"><i class="fa-solid fa-users-gear"></i> Inscripcion Equipo</a>
 </div>
 
 </div>

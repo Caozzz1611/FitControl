@@ -13,6 +13,9 @@ use App\Http\Controllers\EstadisticaPartidoController;
 use App\Http\Controllers\EntrenamientoController;
 use App\Http\Controllers\RendimientoController;
 use App\Http\Controllers\PagoController;
+use App\Http\Controllers\AsistenciaEntrenamientoController;
+use App\Http\Controllers\InscripcionController;
+use App\Http\Controllers\InscripcionEquipoController;
 
 
 
@@ -121,3 +124,11 @@ Route::resource('entrenamiento', EntrenamientoController::class);
 Route::resource('rendimiento', RendimientoController::class);
 
 Route::resource('pago', PagoController::class);
+
+Route::resource('asistencia_entrenamiento', AsistenciaEntrenamientoController::class);
+
+Route::resource('inscripcion', InscripcionController::class);
+
+Route::resource('inscripcion_equipo', InscripcionEquipoController::class);
+
+

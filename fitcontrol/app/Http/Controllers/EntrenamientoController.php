@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Entrenamiento;
 use App\Models\Equipo;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
+
 
 class EntrenamientoController extends Controller
 {
@@ -58,9 +60,22 @@ public function index()
         return redirect()->route('entrenamiento.index')->with('success', 'Entrenamiento actualizado correctamente.');
     }
 
-    public function destroy(Entrenamiento $entrenamiento)
-    {
+   public function destroy($id)
+{
+    try {
+        $entrenamiento = Entrenamiento::findOrFail($id);
         $entrenamiento->delete();
-        return redirect()->route('entrenamiento.index')->with('success', 'Entrenamiento eliminado correctamente.');
+
+        return redirect()->route('entrenamientos.index')
+            ->with('success', 'Entrenamiento eliminado correctamente.');
+    } catch (QueryException $e) {
+        // Aquí detectamos si el error es por restricción de clave foránea
+        if ($e->getCode() == '23000') { // código para violación de integridad
+            return redirect()->route('entrenamiento.index')
+                ->with('error', 'No se puede eliminar este entrenamiento porque tiene registros relacionados.');
+        }
+        // Para otros errores, puedes lanzar la excepción o manejarla diferente
+        throw $e;
     }
+}
 }
