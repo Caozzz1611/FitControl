@@ -95,10 +95,10 @@ use App\Http\Middleware\RoleMiddleware; // Asegúrate de importar tu clase
 
 Route::middleware(['auth'])->group(function () {
 
-Route::get('/admin', function () {
+/* Route::get('/admin', function () {
     return view('dashboard');
 })->name('dashboard');
-
+ */
 
     // O, mejor, usa una cadena de alias si lo prefieres
     Route::middleware([RoleMiddleware::class . ':jugador'])->group(function () {
@@ -130,5 +130,11 @@ Route::resource('asistencia_entrenamiento', AsistenciaEntrenamientoController::c
 Route::resource('inscripcion', InscripcionController::class);
 
 Route::resource('inscripcion_equipo', InscripcionEquipoController::class);
+
+Route::get('/equipos/pdf', [PdfController::class, 'downloadEquipos'])->name('equipos.pdf');
+
+
+Route::get('/pagos/pdf', [PdfController::class, 'downloadPagos'])->name('pagos.pdf');
+
 
 

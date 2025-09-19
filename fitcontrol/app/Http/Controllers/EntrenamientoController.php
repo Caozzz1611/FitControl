@@ -66,7 +66,7 @@ public function index()
         $entrenamiento = Entrenamiento::findOrFail($id);
         $entrenamiento->delete();
 
-        return redirect()->route('entrenamientos.index')
+        return redirect()->route('entrenamiento.index')
             ->with('success', 'Entrenamiento eliminado correctamente.');
     } catch (QueryException $e) {
         // Aquí detectamos si el error es por restricción de clave foránea

@@ -1,5 +1,9 @@
 @props(['buttonId'])
 
+@once
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endonce
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const btn = document.getElementById(@json($buttonId));

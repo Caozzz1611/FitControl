@@ -1,3 +1,4 @@
+
 <div class="form-group">
     <label>Fecha</label>
     <input type="date" name="fecha" value="{{ old('fecha', optional($partido)->fecha) }}" required>

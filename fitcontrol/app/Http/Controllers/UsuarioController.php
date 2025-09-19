@@ -4,52 +4,49 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class UsuarioController extends Controller
 {
-  public function index(Request $request)
-{
-    $query = Usuario::query();
+    public function index(Request $request)
+    {
+        $query = Usuario::query();
 
-    // Filtro por búsqueda general (nombre, apellido, email)
-    if ($request->filled('search')) {
-        $search = $request->input('search');
-        $query->where(function($q) use ($search) {
-            $q->where('nombre', 'LIKE', "%{$search}%")
-              ->orWhere('apellido', 'LIKE', "%{$search}%")
-              ->orWhere('email_usu', 'LIKE', "%{$search}%");
-        });
+        // Filtro por búsqueda general (nombre, apellido, email)
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'LIKE', "%{$search}%")
+                  ->orWhere('apellido', 'LIKE', "%{$search}%")
+                  ->orWhere('email_usu', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Filtro por rol
+        if ($request->filled('rol')) {
+            $query->where('rol', $request->rol);
+        }
+
+        // Filtro por edad mínima y máxima
+        if ($request->filled('edad_min')) {
+            $query->where('edad', '>=', $request->edad_min);
+        }
+
+        if ($request->filled('edad_max')) {
+            $query->where('edad', '<=', $request->edad_max);
+        }
+
+        // Obtener resultados
+        $usuarios = $query->get(); // O paginate(10) si quieres paginación
+
+        return view('usuarios.index', compact('usuarios'));
     }
 
-    // Filtro por rol
-    if ($request->filled('rol')) {
-        $query->where('rol', $request->rol);
+    public function create()
+    {
+        $usuario = new Usuario(); // modelo vacío
+        return view('usuarios.create', compact('usuario'));
     }
-
-    // Filtro por edad mínima y máxima
-    if ($request->filled('edad_min')) {
-        $query->where('edad', '>=', $request->edad_min);
-    }
-
-    if ($request->filled('edad_max')) {
-        $query->where('edad', '<=', $request->edad_max);
-    }
-
-    // Obtener resultados
-    $usuarios = $query->get(); // O paginate(10) si quieres paginación
-
-    return view('usuarios.index', compact('usuarios'));
-}
-
-
-
-
-public function create()
-{
-    $usuario = new Usuario(); // modelo vacío
-    return view('usuarios.create', compact('usuario'));
-}
-
 
     public function store(Request $request)
     {
@@ -66,7 +63,6 @@ public function create()
             'email_usu' => 'required|email|unique:usuario',
             'contra_usu' => 'nullable',
             'rol' => 'required|in:admin,jugador,entrenador',
-
         ]);
 
         if ($request->hasFile('foto_perfil')) {
@@ -98,7 +94,6 @@ public function create()
             'email_usu' => 'required|email|unique:usuario,email_usu,' . $usuario->id_usu . ',id_usu',
             'contra_usu' => 'required',
             'rol' => 'required|in:admin,jugador,entrenador',
-
         ]);
 
         if ($request->hasFile('foto_perfil')) {
@@ -112,13 +107,31 @@ public function create()
 
     public function destroy(Usuario $usuario)
     {
-        $usuario->delete();
-        return redirect()->route('usuarios.index')->with('error', 'Usuario eliminado.');
-    }
-    public function show($id)
-{
-    // Si no quieres mostrar nada, puedes redirigir
-    return redirect()->route('usuarios.index');
-}
+        try {
+            // Eliminar notificaciones relacionadas
+            $usuario->notificaciones()->delete();
 
+            // Eliminar estadísticas relacionadas
+            $usuario->estadisticasPartido()->delete();
+
+            // Finalmente eliminar el usuario
+            $usuario->delete();
+
+            return redirect()->route('usuarios.index')
+                ->with('success', 'Usuario eliminado correctamente.');
+        } catch (QueryException $e) {
+            if ($e->getCode() == '23000') {
+                return redirect()->route('usuarios.index')
+                    ->with('error', 'No se puede eliminar este usuario porque tiene registros relacionados.');
+            }
+
+            throw $e;
+        }
+    }
+
+    public function show($id)
+    {
+        // Redirigir o mostrar información si lo deseas
+        return redirect()->route('usuarios.index');
+    }
 }

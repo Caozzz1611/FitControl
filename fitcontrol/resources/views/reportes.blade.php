@@ -26,13 +26,13 @@
         <div class="reporte-item">
             <div class="reporte-info">
                 <div class="reporte-nombre">
-                    <i class="fas fa-bell"></i> Reporte de Notificaciones
+                    <i class="fas fa-bell"></i> Reporte de Equipos
                 </div>
                 <div class="reporte-descripcion">
-                    Muestra todas las notificaciones enviadas y sus destinatarios dentro del sistema.
+                    Muestra todos los equipos que posee el sistema.
                 </div>
             </div>
-            <a href="{{ route('usuarios.pdf') }}" class="btn btn-pdf">
+            <a href="{{ route('equipos.pdf') }}" class="btn btn-pdf">
                 <i class="fas fa-file-pdf"></i> Descargar PDF
             </a>
         </div>
@@ -47,7 +47,7 @@
                     Resumen de todos los pagos realizados por los usuarios, con estado y montos correspondientes.
                 </div>
             </div>
-            <a href="{{ route('usuarios.pdf') }}" class="btn btn-pdf">
+            <a href="{{ route('pagos.pdf') }}" class="btn btn-pdf">
                 <i class="fas fa-file-pdf"></i> Descargar PDF
             </a>
         </div>

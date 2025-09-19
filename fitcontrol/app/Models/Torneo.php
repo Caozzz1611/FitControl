@@ -27,4 +27,10 @@ class Torneo extends Model
     {
         return $this->belongsTo(Equipo::class, 'id_equipo_fk', 'id_equipo');
     }
+
+    public function partidos()
+{
+    return $this->hasMany(Partido::class, 'id_torneo_fk', 'id_torneo');
+}
+
 }

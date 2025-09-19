@@ -17,4 +17,20 @@ class Equipo extends Model
         'contacto_equipo',
         'categoria_equipo',
     ];
+
+    // Relación con Entrenamiento
+    public function entrenamientos()
+    {
+        return $this->hasMany(Entrenamiento::class, 'id_equipo_fk', 'id_equipo');
+    }
+
+    // Evento para eliminar entrenamientos cuando se elimina un equipo
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($equipo) {
+            $equipo->entrenamientos()->delete();
+        });
+    }
 }

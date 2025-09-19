@@ -28,10 +28,10 @@
  {{-- Botón para insertar --}}
     <div style="height: 50px; margin-bottom: 15px;">
        <a href="{{ route('torneo.create') }}" id="insert-btn" class="btn-insertar">
-    + Insertar Usuario
+    + Insertar Torneo
 </a>
-
 <x-alert-insert :buttonId="'insert-btn'" />
+<br>
 
     </div>
 
@@ -44,7 +44,7 @@
                 <th>Descripción</th>
                 <th>Fecha Inicio</th>
                 <th>Fecha Fin</th>
-                <th>Organizador Asociad</th>
+                <th>Organizador Asociado</th>
                 <th>Acciones</th>
             </tr>
         </thead>

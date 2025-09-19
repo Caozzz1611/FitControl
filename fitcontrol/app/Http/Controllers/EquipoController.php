@@ -56,10 +56,17 @@ class EquipoController extends Controller
     }
 
     public function destroy($id)
-    {
+{
+    try {
         $equipo = Equipo::findOrFail($id);
         $equipo->delete();
 
-        return redirect()->route('equipo.index')->with('success', 'Equipo eliminado correctamente');
+        return redirect()->route('equipo.index')
+                         ->with('success', 'Equipo eliminado correctamente.');
+    } catch (\Illuminate\Database\QueryException $e) {
+        // Esto captura el error de restricción FK
+        return redirect()->route('equipo.index')
+                         ->with('error', 'No se puede eliminar el equipo porque tiene registros relacionados.');
     }
+}
 }

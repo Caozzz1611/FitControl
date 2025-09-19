@@ -2,45 +2,86 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Entrenamiento;
-use App\Models\Rendimiento;
+use App\Models\Torneo;
+use App\Models\Equipo;
 use Illuminate\Http\Request;
 
-class RendimientoController extends Controller
+class TorneoController extends Controller
 {
-    // Mostrar el formulario para crear un nuevo rendimiento
-    public function create()
-    {
-        // Traer todos los entrenamientos para el select
-        $entrenamientos = Entrenamiento::all();
-
-        // Retornar la vista con la variable
-        return view('rendimiento.form', compact('entrenamientos'));
-    }
-
-    // Guardar un nuevo rendimiento
-    public function store(Request $request)
-    {
-        // Validar los datos recibidos
-        $request->validate([
-            'id_entrenamiento_fk' => 'required|exists:entrenamientos,id_entrenamiento',
-            // Agrega aquí las otras validaciones según tu tabla rendimiento
-            // Ejemplo:
-            //'campo1' => 'required|string',
-            //'campo2' => 'numeric',
-        ]);
-
-        // Crear el rendimiento con los datos del request
-        Rendimiento::create($request->all());
-
-        // Redireccionar a donde quieras con mensaje
-        return redirect()->route('rendimiento.index')->with('success', 'Rendimiento creado correctamente.');
-    }
-
-    // Opcional: método para listar rendimientos
+    // Mostrar listado de torneos
     public function index()
     {
-        $rendimientos = Rendimiento::with('entrenamiento')->get();
-        return view('rendimiento.index', compact('rendimientos'));
+        // Cargar torneos con su equipo relacionado para mostrar datos
+        $torneos = Torneo::with('equipo')->get();
+        return view('torneo.index', compact('torneos'));
     }
+
+    // Mostrar formulario para crear un nuevo torneo
+public function create()
+{
+    $equipos = Equipo::all();  // O la consulta que uses
+    $torneo = null;
+    return view('torneo.create', compact('torneo', 'equipos'));
+}
+
+    // Guardar nuevo torneo
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:100',
+            'premio' => 'nullable|numeric',
+            'descripcion' => 'nullable|string|max:200',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+            'id_equipo_fk' => 'required|exists:equipo,id_equipo',
+        ]);
+
+        Torneo::create($request->all());
+
+        return redirect()->route('torneo.index')->with('success', 'Torneo creado correctamente.');
+    }
+
+    // Mostrar formulario para editar torneo
+    public function edit(Torneo $torneo)
+    {
+        $equipos = Equipo::all();
+        return view('torneo.form', compact('torneo', 'equipos'));
+    }
+
+    // Actualizar torneo
+    public function update(Request $request, Torneo $torneo)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:100',
+            'premio' => 'nullable|numeric',
+            'descripcion' => 'nullable|string|max:200',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+            'id_equipo_fk' => 'required|exists:equipo,id_equipo',
+        ]);
+
+        $torneo->update($request->all());
+
+        return redirect()->route('torneo.index')->with('success', 'Torneo actualizado correctamente.');
+    }
+
+    // Eliminar torneo
+public function destroy(Torneo $torneo)
+{
+    try {
+        // Eliminar partidos relacionados
+        $torneo->partidos()->delete();
+
+        // Luego eliminar el torneo
+        $torneo->delete();
+
+        return redirect()->route('torneo.index')->with('success', 'Torneo eliminado correctamente.');
+    } catch (QueryException $e) {
+        if ($e->getCode() == '23000') {
+            return redirect()->route('torneo.index')->with('error', 'No se puede eliminar este torneo porque tiene registros relacionados.');
+        }
+        throw $e;
+    }
+}
+
 }
