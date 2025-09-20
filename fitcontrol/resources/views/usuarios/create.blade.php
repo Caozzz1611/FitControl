@@ -8,7 +8,6 @@
     <form action="{{ route('usuarios.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @include('usuarios.form')
-        <button type="submit" class="btn">Guardar</button>
     </form>
 </div>
 

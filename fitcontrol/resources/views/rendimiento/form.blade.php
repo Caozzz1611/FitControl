@@ -19,9 +19,15 @@ form {
 
 .form-group label {
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     font-size: 14px;
     color: #444;
+}
+
+.hint {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 6px;
 }
 
 .form-group input,
@@ -73,17 +79,20 @@ button:hover {
 
 <div class="form-group">
     <label for="evaluacion">Evaluación</label>
+    <span class="hint">Ingrese una breve evaluación (máx. 100 caracteres).</span>
     <input type="text" id="evaluacion" name="evaluacion" maxlength="100"
            value="{{ old('evaluacion', optional($rendimiento)->evaluacion) }}" required>
 </div>
 
 <div class="form-group">
     <label for="comentarios">Comentarios</label>
+    <span class="hint">Agregue observaciones (máx. 80 caracteres).</span>
     <textarea id="comentarios" name="comentarios" maxlength="80" rows="3" required>{{ old('comentarios', optional($rendimiento)->comentarios) }}</textarea>
 </div>
 
 <div class="form-group">
     <label for="id_usu_fk">Usuario</label>
+    <span class="hint">Seleccione el usuario al que pertenece la evaluación.</span>
     <select id="id_usu_fk" name="id_usu_fk" required>
         <option value="">-- Selecciona un usuario --</option>
         @foreach($usuarios as $usuario)
@@ -97,6 +106,7 @@ button:hover {
 
 <div class="form-group">
     <label for="id_entrenamiento_fk">Entrenamiento</label>
+    <span class="hint">Seleccione el entrenamiento evaluado (fecha y ubicación).</span>
     <select id="id_entrenamiento_fk" name="id_entrenamiento_fk" required>
         <option value="">-- Selecciona un entrenamiento --</option>
         @foreach($entrenamientos as $entrenamiento)

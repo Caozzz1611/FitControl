@@ -14,7 +14,6 @@ function togglePassword() {
       background: #ffffff;
       border-radius: 12px;
       box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
-
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 25px;
@@ -49,6 +48,12 @@ function togglePassword() {
       border-color: #007bff;
       outline: none;
       box-shadow: 0px 0px 6px rgba(0,123,255,0.2);
+  }
+
+  .hint {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
   }
 
   button {
@@ -88,26 +93,31 @@ function togglePassword() {
 <div class="form-group">
     <label>Nombre</label>
     <input type="text" name="nombre" value="{{ old('nombre', optional($torneo)->nombre) }}">
+    <span class="hint">Ingrese el nombre oficial del torneo.</span>
 </div>
 
 <div class="form-group">
     <label>Premio</label>
     <input type="number" name="premio" value="{{ old('premio', optional($torneo)->premio) }}">
+    <span class="hint">Monto en números, sin puntos ni comas.</span>
 </div>
 
 <div class="form-group">
     <label>Descripción</label>
     <textarea name="descripcion">{{ old('descripcion', optional($torneo)->descripcion) }}</textarea>
+    <span class="hint">Agregue una breve descripción del torneo.</span>
 </div>
 
 <div class="form-group">
     <label>Fecha Inicio</label>
     <input type="date" name="fecha_inicio" value="{{ old('fecha_inicio', optional($torneo)->fecha_inicio) }}">
+    <span class="hint">Seleccione la fecha en que comienza el torneo.</span>
 </div>
 
 <div class="form-group">
     <label>Fecha Fin</label>
     <input type="date" name="fecha_fin" value="{{ old('fecha_fin', optional($torneo)->fecha_fin) }}">
+    <span class="hint">Seleccione la fecha en que finaliza el torneo.</span>
 </div>
 
 <div class="form-group">
@@ -120,4 +130,5 @@ function togglePassword() {
             </option>
         @endforeach
     </select>
+    <span class="hint">Seleccione el equipo encargado de la organización.</span>
 </div>

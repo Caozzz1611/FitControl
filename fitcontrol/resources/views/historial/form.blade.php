@@ -1,79 +1,122 @@
 <style>
-form {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 25px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-}
+        form {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
 
-.form-group label {
-    font-weight: bold;
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #444;
-}
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 14px;
+            color: #444;
+        }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-    padding: 12px 14px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    width: 100%;
-}
+        .hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
 
-button {
-    grid-column: span 2;
-    background: #007bff;
-    color: #fff;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background 0.3s ease;
-}
+        .form-group input,
+        .form-group select {
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-button:hover {
-    background: #0056b3;
-}
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0px 0px 6px rgba(0,123,255,0.2);
+        }
 
-.btn-back {
-    grid-column: span 2;
-    display: inline-block;
-    margin-top: 10px;
-    padding: 12px 14px;
-    background: #6c757d;
-    color: #fff;
-    border-radius: 8px;
-    font-size: 14px;
-    text-decoration: none;
-    text-align: center;
-    transition: background 0.3s ease;
-}
+        .form-group img {
+            margin-top: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            max-width: 120px;
+        }
 
-.btn-back:hover {
-    background: #5a6268;
-}
-</style>
+        button {
+            grid-column: span 3;
+            background: #007bff;
+            color: #fff;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
 
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* estilos para el toggle de contraseña (ojito) */
+        .password-wrapper .input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-wrapper input {
+            width: 100%;
+            padding-right: 44px; /* espacio para el ojito */
+        }
+
+        .password-wrapper .toggle-password {
+            position: absolute;
+            right: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #555;
+            user-select: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+        }
+
+        .password-wrapper .toggle-password:hover {
+            color: #007bff;
+            background: rgba(0,123,255,0.05);
+        }
+
+        .btn-back {
+            grid-column: span 3;
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: bold;
+        }
+    </style>
 <div class="form-group">
     <label>Observaciones</label>
-    <textarea name="observaciones" rows="4" required>{{ old('observaciones', optional($historial)->observaciones) }}</textarea>
+    <textarea name="observaciones" rows="3" required>{{ old('observaciones', optional($historial)->observaciones) }}</textarea>
+    <span class="hint">Escriba cualquier observación relevante sobre el historial del usuario.</span>
 </div>
 
 <div class="form-group">
@@ -81,6 +124,7 @@ button:hover {
     <input type="date" name="fecha"
            value="{{ old('fecha', optional($historial)->fecha) }}"
            required>
+    <span class="hint">Seleccione la fecha correspondiente al registro del historial.</span>
 </div>
 
 <div class="form-group">
@@ -94,9 +138,11 @@ button:hover {
             </option>
         @endforeach
     </select>
+    <span class="hint">Seleccione el usuario al que corresponde este historial.</span>
 </div>
 
 <button type="submit">Guardar</button>
+
 <a href="{{ url()->previous() }}" class="btn-back">
     <i class="fas fa-arrow-left"></i> Volver
 </a>

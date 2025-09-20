@@ -90,7 +90,7 @@
         <tbody>
             @forelse($asistencias as $asistencia)
                 <tr>
-                    <td>{{ $asistencia->id_asistencia_entrenamiento }}</td>
+                    <td>{{ $asistencia->id_asistencia }}</td>
                     <td>{{ $asistencia->entrenamiento?->fecha ?? '-' }} - {{ $asistencia->entrenamiento?->hora ?? '-' }}</td>
                     <td>{{ $asistencia->jugador?->nombre ?? '-' }}</td>
                     <td>{{ $asistencia->asistio ? 'Sí' : 'No' }}</td>

@@ -109,67 +109,45 @@
             display: inline-block;
             margin-top: 10px;
             text-decoration: none;
-            color: #007bff;
+            color: #ffffff;
             font-weight: bold;
         }
     </style>
 
-<form method="POST" action="{{ route('partido.store') }}">
-    @csrf
+<div class="form-group">
+    <label for="fecha">Fecha</label>
+    <input type="date" id="fecha" name="fecha" value="{{ old('fecha', optional($entrenamiento)->fecha) }}" required>
+    <span class="hint">Selecciona la fecha del entrenamiento.</span>
+</div>
 
-    <div class="form-group">
-        <label>Fecha</label>
-        <input type="date" name="fecha" value="{{ old('fecha', optional($partido)->fecha) }}" required>
-        <span class="hint">Seleccione la fecha del partido.</span>
-    </div>
+<div class="form-group">
+    <label for="hora">Hora</label>
+    <input type="time" id="hora" name="hora" value="{{ old('hora', optional($entrenamiento)->hora) }}" required>
+    <span class="hint">Ingresa la hora de inicio del entrenamiento.</span>
+</div>
 
-    <div class="form-group">
-        <label>Hora</label>
-        <input type="time" name="hora" value="{{ old('hora', optional($partido)->hora) }}" required>
-        <span class="hint">Seleccione la hora de inicio del partido.</span>
-    </div>
+<div class="form-group">
+    <label for="ubicacion">Ubicación</label>
+    <input type="text" id="ubicacion" name="ubicacion" value="{{ old('ubicacion', optional($entrenamiento)->ubicacion) }}" required>
+    <span class="hint">Escribe la dirección o lugar donde se realizará el entrenamiento.</span>
+</div>
 
-    <div class="form-group">
-        <label>Rival</label>
-        <input type="text" name="rival" value="{{ old('rival', optional($partido)->rival) }}" required>
-        <span class="hint">Ingrese el nombre del equipo rival.</span>
-    </div>
+<div class="form-group">
+    <label for="id_equipo_fk">Equipo</label>
+    <select id="id_equipo_fk" name="id_equipo_fk" required>
+        <option value="">-- Selecciona un equipo --</option>
+        @foreach($equipos as $equipo)
+            <option value="{{ $equipo->id_equipo }}"
+                {{ old('id_equipo_fk', optional($entrenamiento)->id_equipo_fk) == $equipo->id_equipo ? 'selected' : '' }}>
+                {{ $equipo->nombre_equipo }}
+            </option>
+        @endforeach
+    </select>
+    <span class="hint">Selecciona el equipo que participará en este entrenamiento.</span>
+</div>
 
-    <div class="form-group">
-        <label>Resultado</label>
-        <input type="text" name="resultado" value="{{ old('resultado', optional($partido)->resultado) }}">
-        <span class="hint">Ingrese el resultado final (opcional).</span>
-    </div>
+<button type="submit">Guardar</button>
 
-    <div class="form-group">
-        <label>Torneo</label>
-        <select name="id_torneo_fk" required>
-            <option value="">-- Selecciona un torneo --</option>
-            @foreach($torneos as $torneo)
-                <option value="{{ $torneo->id_torneo }}"
-                    {{ old('id_torneo_fk', optional($partido)->id_torneo_fk) == $torneo->id_torneo ? 'selected' : '' }}>
-                    {{ $torneo->nombre }}
-                </option>
-            @endforeach
-        </select>
-        <span class="hint">Seleccione el torneo al que pertenece el partido.</span>
-    </div>
-
-    <div class="form-group">
-        <label>Equipo</label>
-        <select name="id_equipo_fk" required>
-            <option value="">-- Selecciona un equipo --</option>
-            @foreach($equipos as $equipo)
-                <option value="{{ $equipo->id_equipo }}"
-                    {{ old('id_equipo_fk', optional($partido)->id_equipo_fk) == $equipo->id_equipo ? 'selected' : '' }}>
-                    {{ $equipo->nombre_equipo }}
-                </option>
-            @endforeach
-        </select>
-        <span class="hint">Seleccione el equipo local que jugará el partido.</span>
-    </div>
-
-    <button type="submit">Guardar</button>
-
-    <a href="{{ url()->previous() }}" class="btn-back"><i class="fas fa-arrow-left"></i> Volver</a>
-</form>
+<a href="{{ url()->previous() }}" class="btn-back">
+    <i class="fas fa-arrow-left"></i> Volver
+</a>

@@ -48,6 +48,7 @@
 
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('pago.create') }}" id="insert-btn" class="btn-insertar">+ Insertar Pago</a>
+              <x-alert-insert :buttonId="'insert-btn'" />
     </div>
 
     <table class="tabla-usuarios">
@@ -62,35 +63,41 @@
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody>
-            @forelse($pagos as $pago)
-                <tr>
-                    <td>{{ $pago->id_pago }}</td>
-                    <td>{{ $pago->fecha_pago }}</td>
-                    <td>{{ $pago->monto }}</td>
-                    <td>{{ ucfirst($pago->estado) }}</td>
-                    <td>
-                        @if($pago->recibo_pdf)
-                            <a href="{{ asset('storage/' . $pago->recibo_pdf) }}" target="_blank">Ver PDF</a>
-                        @else
-                            -
-                        @endif
-                    </td>
-                    <td>{{ $pago->usuario ? $pago->usuario->nombre . ' ' . $pago->usuario->apellido : '-' }}</td>
-                    <td>
-                        <a href="{{ route('pago.edit', $pago) }}" class="btn-editar">Editar</a>
+      <tbody>
+    @forelse($pagos as $pago)
+        <tr>
+            <td>{{ $pago->id_pago }}</td>
+            <td>{{ $pago->fecha_pago }}</td>
+            <td>{{ $pago->monto }}</td>
+            <td>{{ ucfirst($pago->estado) }}</td>
+            <td>
+                @if($pago->recibo_pdf)
+                    <a href="{{ asset('storage/' . $pago->recibo_pdf) }}" target="_blank">Ver PDF</a>
+                @else
+                    -
+                @endif
+            </td>
+            <td>{{ $pago->usuario ? $pago->usuario->nombre . ' ' . $pago->usuario->apellido : '-' }}</td>
+            <td>
+                <!-- Botón Editar con ID -->
+                <a href="{{ route('pago.edit', $pago) }}" id="edit-btn-{{ $pago->id_pago }}" class="btn-editar">Editar</a>
+                <!-- Alerta asociada al botón Editar -->
+                <x-alert-edit :buttonId="'edit-btn-'.$pago->id_pago" />
 
-                        <form id="delete-form-{{ $pago->id_pago }}" action="{{ route('pago.destroy', $pago) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn-eliminar" onclick="confirmDelete({{ $pago->id_pago }})">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr><td colspan="7">No hay pagos registrados.</td></tr>
-            @endforelse
-        </tbody>
+                <!-- Formulario de eliminar -->
+                <form id="delete-form-{{ $pago->id_pago }}" action="{{ route('pago.destroy', $pago) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="btn-eliminar" onclick="confirmDelete({{ $pago->id_pago }})">Eliminar</button>
+                </form>
+                <!-- Alerta de eliminar (si tu componente necesita formId) -->
+                <x-alert-delete :formId="'delete-form-'.$pago->id_pago" />
+            </td>
+        </tr>
+    @empty
+        <tr><td colspan="7">No hay pagos registrados.</td></tr>
+    @endforelse
+</tbody>
     </table>
 </div>
 

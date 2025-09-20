@@ -1,50 +1,118 @@
 <style>
-.form-group {
-    margin-bottom: 15px;
-}
+        form {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
 
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
 
-input, select {
-    width: 100%;
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 14px;
+            color: #444;
+        }
 
-button {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-}
+        .hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
 
-button:hover {
-    background-color: #0056b3;
-}
+        .form-group input,
+        .form-group select {
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-.btn-back {
-    display: inline-block;
-    margin-top: 10px;
-    background: #6c757d;
-    color: #fff;
-    padding: 10px 14px;
-    border-radius: 6px;
-    text-decoration: none;
-}
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0px 0px 6px rgba(0,123,255,0.2);
+        }
 
-.btn-back:hover {
-    background: #5a6268;
-}
-</style>
+        .form-group img {
+            margin-top: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            max-width: 120px;
+        }
 
+        button {
+            grid-column: span 3;
+            background: #007bff;
+            color: #fff;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* estilos para el toggle de contraseña (ojito) */
+        .password-wrapper .input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-wrapper input {
+            width: 100%;
+            padding-right: 44px; /* espacio para el ojito */
+        }
+
+        .password-wrapper .toggle-password {
+            position: absolute;
+            right: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #555;
+            user-select: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+        }
+
+        .password-wrapper .toggle-password:hover {
+            color: #007bff;
+            background: rgba(0,123,255,0.05);
+        }
+
+        .btn-back {
+            grid-column: span 3;
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: bold;
+        }
+    </style>
 <div class="form-group">
     <label for="id_usu_fk">Usuario</label>
     <select id="id_usu_fk" name="id_usu_fk" required>
@@ -56,6 +124,7 @@ button:hover {
             </option>
         @endforeach
     </select>
+    <span class="hint">Seleccione el usuario que será inscrito en el torneo.</span>
 </div>
 
 <div class="form-group">
@@ -69,16 +138,19 @@ button:hover {
             </option>
         @endforeach
     </select>
+    <span class="hint">Seleccione el torneo en el que se inscribirá el usuario.</span>
 </div>
 
 <div class="form-group">
     <label for="fecha_inscripcion">Fecha Inscripción</label>
     <input type="date" id="fecha_inscripcion" name="fecha_inscripcion" value="{{ old('fecha_inscripcion', optional($inscripcion)->fecha_inscripcion) }}" required>
+    <span class="hint">Seleccione la fecha en la que se realizó la inscripción.</span>
 </div>
 
 <div class="form-group">
     <label for="estado">Estado</label>
     <input type="text" id="estado" name="estado" value="{{ old('estado', optional($inscripcion)->estado) }}" required maxlength="20" placeholder="Ej: Confirmado, Pendiente">
+    <span class="hint">Ingrese el estado de la inscripción (ej: Confirmado, Pendiente, Cancelado).</span>
 </div>
 
 <button type="submit">Guardar</button>

@@ -9,7 +9,6 @@
         @csrf
         {{-- IMPORTANTE: pasar torneo = null para que el partial siempre tenga la variable --}}
         @include('partido.form', ['partido' => null])
-        <button type="submit">Guardar</button>
     </form>
 </div>
 <a href="{{ route('partido.index') }}" class="btn-back">
