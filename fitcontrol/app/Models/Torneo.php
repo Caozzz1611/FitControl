@@ -23,10 +23,12 @@ class Torneo extends Model
     ];
 
     // Relación con EQUIPO
-    public function equipo()
-    {
-        return $this->belongsTo(Equipo::class, 'id_equipo_fk', 'id_equipo');
-    }
+// En el modelo Torneo (App\Models\Torneo)
+public function equipo()
+{
+    return $this->belongsTo(Equipo::class, 'id_equipo_fk', 'id_equipo');
+}
+
 
     public function partidos()
 {

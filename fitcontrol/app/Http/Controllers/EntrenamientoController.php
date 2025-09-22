@@ -10,11 +10,33 @@ use Illuminate\Database\QueryException;
 
 class EntrenamientoController extends Controller
 {
-public function index()
+
+public function index(Request $request)
 {
     $equipos = Equipo::all();
-    $entrenamientos = Entrenamiento::all();
-    $entrenamiento = null; // O si es para edición, un registro específico
+
+    $query = Entrenamiento::with('equipo');
+
+    if ($request->filled('fecha')) {
+        $query->where('fecha', 'like', '%' . $request->fecha . '%');
+    }
+
+    if ($request->filled('hora')) {
+        $query->where('hora', 'like', '%' . $request->hora . '%');
+    }
+
+    if ($request->filled('ubicacion')) {
+        $query->where('ubicacion', 'like', '%' . $request->ubicacion . '%');
+    }
+
+    if ($request->filled('equipo')) {
+        $query->whereHas('equipo', function ($q) use ($request) {
+            $q->where('nombre_equipo', 'like', '%' . $request->equipo . '%');
+        });
+    }
+
+    $entrenamientos = $query->get();
+    $entrenamiento = null; // si no estás en modo edición
 
     return view('entrenamiento.index', compact('equipos', 'entrenamientos', 'entrenamiento'));
 }

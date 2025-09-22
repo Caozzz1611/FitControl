@@ -47,6 +47,17 @@
 <div class="card">
     <h2 class="h2L">Listado de Entrenamientos</h2>
 
+    <form method="GET" action="{{ route('entrenamiento.index') }}" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+    <input type="date" name="fecha" value="{{ request('fecha') }}" placeholder="Fecha">
+    <input type="time" name="hora" value="{{ request('hora') }}" placeholder="Hora">
+    <input type="text" name="ubicacion" value="{{ request('ubicacion') }}" placeholder="Ubicación">
+    <input type="text" name="equipo" value="{{ request('equipo') }}" placeholder="Equipo">
+
+    <button type="submit">Filtrar</button>
+    <a href="{{ route('entrenamiento.index') }}" class="btn-reset">Limpiar</a>
+</form>
+
+
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('entrenamiento.create') }}" id="insert-btn" class="btn-insertar">+ Insertar Entrenamiento</a>
     </div>

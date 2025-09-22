@@ -7,11 +7,34 @@ use Illuminate\Http\Request;
 
 class EquipoController extends Controller
 {
-    public function index()
-    {
-        $equipos = Equipo::all();
-        return view('equipo.index', compact('equipos'));
+ 
+
+public function index(Request $request)
+{
+    $query = Equipo::query();
+
+    // Filtro por nombre
+    if ($request->filled('search')) {
+        $query->where('nombre_equipo', 'LIKE', "%{$request->search}%");
     }
+
+    // Filtro por categoría
+    if ($request->filled('categoria')) {
+        $query->where('categoria_equipo', $request->categoria);
+    }
+
+    // Filtro por ubicación
+    if ($request->filled('ubicacion')) {
+        $query->where('ubi_equipo', 'LIKE', "%{$request->ubicacion}%");
+    }
+
+    $equipos = $query->get(); // O ->paginate(10) si quieres paginación
+
+    // Obtener categorías únicas para el filtro
+    $categorias = Equipo::select('categoria_equipo')->distinct()->pluck('categoria_equipo');
+
+    return view('equipo.index', compact('equipos', 'categorias'));
+}
 
     public function create()
     {

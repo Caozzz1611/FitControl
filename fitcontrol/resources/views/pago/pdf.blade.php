@@ -36,16 +36,15 @@
                 <th>Monto</th>
                 <th>Fecha</th>
                 <th>Usuario</th>
-                <th>Descripción</th>
                 <!-- Agrega o modifica columnas según campos del modelo Pago -->
             </tr>
         </thead>
         <tbody>
             @forelse($pagos as $pago)
                 <tr>
-                    <td>{{ $pago->id }}</td>
+                    <td>{{ $pago->id_pago }}</td>
                     <td>{{ $pago->monto }}</td>
-                    <td>{{ $pago->fecha }}</td>
+                    <td>{{ $pago->fecha_pago }}</td>
                     <td>{{ $pago->usuario->nombre ?? 'N/A' }}</td>
                     <td>{{ $pago->descripcion }}</td>
                 </tr>

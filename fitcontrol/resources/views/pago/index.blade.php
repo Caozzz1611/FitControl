@@ -45,6 +45,28 @@
 
 <div class="card">
     <h2>Listado de Pagos</h2>
+    <form method="GET" action="{{ route('pago.index') }}" style="margin-bottom: 20px; display: flex; gap: 10px;">
+    <!-- Filtro por fecha -->
+    <input type="date" name="fecha_pago" value="{{ request('fecha_pago') }}" placeholder="Fecha Pago">
+
+    <!-- Filtro por estado -->
+    <select name="estado">
+        <option value="">Estado</option>
+        <option value="pendiente" {{ request('estado') == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+        <option value="completado" {{ request('estado') == 'completado' ? 'selected' : '' }}>Completado</option>
+        <option value="cancelado" {{ request('estado') == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+    </select>
+
+    <!-- Filtro por usuario -->
+    <input type="text" name="usuario" value="{{ request('usuario') }}" placeholder="Nombre de Usuario">
+
+    <!-- Botón de Filtrar -->
+    <button type="submit">Filtrar</button>
+
+    <!-- Botón de limpiar filtros -->
+    <a href="{{ route('pago.index') }}" class="btn-reset">Limpiar</a>
+</form>
+
 
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('pago.create') }}" id="insert-btn" class="btn-insertar">+ Insertar Pago</a>

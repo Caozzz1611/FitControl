@@ -25,6 +25,28 @@
 <div class="card">
     <h2 class="h2L">Listado de Torneos</h2>
 
+    <form action="{{ route('torneo.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+    <input type="text" name="search" placeholder="Buscar por nombre" value="{{ request('search') }}">
+
+    <input type="date" name="fecha_inicio" value="{{ request('fecha_inicio') }}">
+    <input type="date" name="fecha_fin" value="{{ request('fecha_fin') }}">
+
+    <select name="equipo">
+        <option value="">Todos los organizadores</option>
+        @foreach($equipos as $equipo)
+            <option value="{{ $equipo->id_equipo }}" {{ request('equipo') == $equipo->id_equipo ? 'selected' : '' }}>
+                {{ $equipo->nombre_equipo }}
+            </option>
+        @endforeach
+    </select>
+
+    <button type="submit">Filtrar</button>
+    <a href="{{ route('torneo.index') }}" class="btn-reset" title="Limpiar filtros">
+        <i class="fas fa-sync-alt"></i>
+    </a>
+</form>
+
+
  {{-- Botón para insertar --}}
     <div style="height: 50px; margin-bottom: 15px;">
        <a href="{{ route('torneo.create') }}" id="insert-btn" class="btn-insertar">

@@ -8,11 +8,35 @@ use Illuminate\Http\Request;
 
 class PagoController extends Controller
 {
-public function index()
+
+
+public function index(Request $request)
 {
-    $pagos = Pago::with('usuario')->get();
+    $query = Pago::with('usuario');
+
+    // Filtro por fecha de pago
+    if ($request->filled('fecha_pago')) {
+        $query->whereDate('fecha_pago', $request->fecha_pago);
+    }
+
+    // Filtro por estado
+    if ($request->filled('estado')) {
+        $query->where('estado', $request->estado);
+    }
+
+    // Filtro por nombre del usuario
+    if ($request->filled('usuario')) {
+        $query->whereHas('usuario', function($q) use ($request) {
+            $q->where('nombre', 'like', '%' . $request->usuario . '%');
+        });
+    }
+
+    // Paginación
+    $pagos = $query->paginate(10);
+
     return view('pago.index', compact('pagos'));
 }
+
 
     public function create()
     {

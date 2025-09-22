@@ -47,12 +47,39 @@
 <div class="card">
     <h2 class="h2L">Listado de Inscripciones</h2>
 
+    <!-- Filtros -->
+    <form method="GET" action="{{ route('inscripcion.index') }}" style="margin-bottom: 20px; display: flex; gap: 10px;">
+        <!-- Filtro por usuario -->
+        <input type="text" name="usuario" value="{{ request('usuario') }}" placeholder="Buscar Usuario" class="form-control">
+
+        <!-- Filtro por torneo -->
+        <input type="text" name="torneo" value="{{ request('torneo') }}" placeholder="Buscar Torneo" class="form-control">
+
+        <!-- Filtro por estado -->
+        <select name="estado" class="form-control">
+            <option value="">Selecciona Estado</option>
+            <option value="activo" {{ request('estado') == 'activo' ? 'selected' : '' }}>Activo</option>
+            <option value="pendiente" {{ request('estado') == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+        </select>
+
+        <!-- Filtro por fecha -->
+        <input type="date" name="fecha_inscripcion" value="{{ request('fecha_inscripcion') }}" class="form-control">
+
+        <!-- Botón Filtrar -->
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+        
+        <!-- Botón Limpiar Filtros -->
+        <a href="{{ route('inscripcion.index') }}" class="btn btn-secondary">Limpiar</a>
+    </form>
+
+    <!-- Insertar Nueva Inscripción -->
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('inscripcion.create') }}" id="insert-btn" class="btn-insertar">+ Insertar Inscripción</a>
     </div>
 
     <x-alert-insert :buttonId="'insert-btn'" />
 
+    <!-- Tabla de Inscripciones -->
     <table class="tabla-usuarios">
         <thead>
             <tr>
@@ -71,12 +98,10 @@
                     <td>{{ $inscripcion->usuario?->nombre ?? '-' }} {{ $inscripcion->usuario?->apellido ?? '' }}</td>
                     <td>{{ $inscripcion->torneo?->nombre ?? '-' }}</td>
                     <td>{{ $inscripcion->fecha_inscripcion }}</td>
-                    <td>{{ $inscripcion->estado }}</td>
+                    <td>{{ ucfirst($inscripcion->estado) }}</td>
                     <td>
                         <a href="{{ route('inscripcion.edit', $inscripcion) }}" id="edit-btn-{{ $inscripcion->id_inscripcion }}" class="btn-editar">Editar</a>
-
-<x-alert-edit :buttonId="'edit-btn-'.$inscripcion->id_inscripcion" />
-
+                        <x-alert-edit :buttonId="'edit-btn-'.$inscripcion->id_inscripcion" />
 
                         <form id="delete-form-{{ $inscripcion->id_inscripcion }}" action="{{ route('inscripcion.destroy', $inscripcion) }}" method="POST" style="display:inline;">
                             @csrf
@@ -92,6 +117,11 @@
             @endforelse
         </tbody>
     </table>
+
+    <!-- Paginación -->
+    <div class="pagination">
+        {{ $inscripciones->links() }}
+    </div>
 </div>
 
 @endsection

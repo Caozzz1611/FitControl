@@ -25,6 +25,26 @@
 
 <div class="card">
     <h2>Listado de Equipos</h2>
+    <form action="{{ route('equipo.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+    <input type="text" name="search" placeholder="Buscar nombre de equipo" value="{{ request('search') }}">
+
+    <input type="text" name="ubicacion" placeholder="Ubicación" value="{{ request('ubicacion') }}">
+
+    <select name="categoria">
+        <option value="">Todas las categorías</option>
+        @foreach($categorias as $categoria)
+            <option value="{{ $categoria }}" {{ request('categoria') == $categoria ? 'selected' : '' }}>
+                {{ $categoria }}
+            </option>
+        @endforeach
+    </select>
+
+    <button type="submit">Filtrar</button>
+    <a href="{{ route('equipo.index') }}" class="btn-reset" title="Limpiar filtros">
+        <i class="fas fa-sync-alt"></i>
+    </a>
+</form>
+
     {{-- Botón para insertar --}}
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('equipo.create') }}" id="insert-btn" class="btn-insertar">

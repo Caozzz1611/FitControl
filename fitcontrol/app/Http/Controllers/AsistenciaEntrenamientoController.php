@@ -9,13 +9,38 @@ use Illuminate\Http\Request;
 
 class AsistenciaEntrenamientoController extends Controller
 {
-public function index()
+public function index(Request $request)
 {
-    $asistencias = AsistenciaEntrenamiento::with(['jugador', 'entrenamiento.equipo'])->get();
+    $query = AsistenciaEntrenamiento::with(['jugador', 'entrenamiento.equipo']);
+
+    // Filtro por fecha de entrenamiento
+    if ($request->filled('fecha_entrenamiento')) {
+        $query->whereHas('entrenamiento', function($q) use ($request) {
+            $q->whereDate('fecha', $request->fecha_entrenamiento);
+        });
+    }
+
+    // Filtro por jugador
+    if ($request->filled('jugador')) {
+        $query->whereHas('jugador', function($q) use ($request) {
+            $q->where('nombre', 'like', '%' . $request->jugador . '%');
+        });
+    }
+
+    // Filtro por si asistió o no
+    if ($request->filled('asistio')) {
+        $query->where('asistio', $request->asistio);
+    }
+
+    // Paginación
+    $asistencias = $query->paginate(10);
+
+    // Obtener todos los entrenamientos para el filtro
     $entrenamientos = Entrenamiento::all();
 
     return view('asistencia_entrenamiento.index', compact('asistencias', 'entrenamientos'));
 }
+
 
 
 

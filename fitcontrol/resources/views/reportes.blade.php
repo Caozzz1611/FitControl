@@ -51,6 +51,23 @@
                 <i class="fas fa-file-pdf"></i> Descargar PDF
             </a>
         </div>
+
+           {{-- Reporte de Pagos --}}
+        <div class="reporte-item">
+            <div class="reporte-info">
+                <div class="reporte-nombre">
+                    <i class="fas fa-money-bill-wave"></i> Reporte de Torneos
+                </div>
+                <div class="reporte-descripcion">
+                    Resumen de todos los pagos realizados por los usuarios, con estado y montos correspondientes.
+                </div>
+            </div>
+            <a href="{{ route('torneo.pdf') }}" class="btn btn-pdf">
+    <i class="fas fa-file-pdf"></i> Descargar PDF
+</a>
+
+            </a>
+        </div>
     </div>
 </div>
 

@@ -10,11 +10,36 @@ use App\Models\Entrenamiento;
 
 class EstadisticaPartidoController extends Controller
 {
-    public function index()
-    {
-        $estadisticas = EstadisticaPartido::with(['partido', 'usuario'])->get();
-        return view('estadistica_partido.index', compact('estadisticas'));
+
+public function index(Request $request)
+{
+    $query = EstadisticaPartido::with(['partido', 'usuario']);
+
+    if ($request->filled('usuario')) {
+        $query->whereHas('usuario', function ($q) use ($request) {
+            $q->where('nombre', 'like', '%' . $request->usuario . '%');
+        });
     }
+
+    if ($request->filled('rival')) {
+        $query->whereHas('partido', function ($q) use ($request) {
+            $q->where('rival', 'like', '%' . $request->rival . '%');
+        });
+    }
+
+    if ($request->filled('goles_min')) {
+        $query->where('goles', '>=', (int) $request->goles_min);
+    }
+
+    if ($request->filled('asistencias_min')) {
+        $query->where('asistencias', '>=', (int) $request->asistencias_min);
+    }
+
+    $estadisticas = $query->get();
+
+    return view('estadistica_partido.index', compact('estadisticas'));
+}
+
 
   public function create()
 {

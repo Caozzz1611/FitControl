@@ -9,13 +9,38 @@ use Illuminate\Database\QueryException;
 
 class TorneoController extends Controller
 {
-    // Mostrar listado de torneos
-    public function index()
-    {
-        // Cargar torneos con su equipo relacionado para mostrar datos
-        $torneos = Torneo::with('equipo')->get();
-        return view('torneo.index', compact('torneos'));
+
+
+public function index(Request $request)
+{
+    $query = Torneo::with('equipo');
+
+    // Filtro por nombre
+    if ($request->filled('search')) {
+        $query->where('nombre', 'LIKE', "%{$request->search}%");
     }
+
+    // Filtro por fecha de inicio mínima
+    if ($request->filled('fecha_inicio')) {
+        $query->whereDate('fecha_inicio', '>=', $request->fecha_inicio);
+    }
+
+    // Filtro por fecha de fin máxima
+    if ($request->filled('fecha_fin')) {
+        $query->whereDate('fecha_fin', '<=', $request->fecha_fin);
+    }
+
+    // Filtro por organizador/equipo
+    if ($request->filled('equipo')) {
+        $query->where('id_equipo_fk', $request->equipo);
+    }
+
+    $torneos = $query->get(); // o ->paginate(10) si prefieres paginar
+    $equipos = Equipo::all(); // Para el select de filtro
+
+    return view('torneo.index', compact('torneos', 'equipos'));
+}
+
 
     // Mostrar formulario para crear un nuevo torneo
     public function create()
@@ -98,4 +123,5 @@ class TorneoController extends Controller
             throw $e;
         }
     }
+    
 }

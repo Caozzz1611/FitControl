@@ -6,6 +6,26 @@
 
 <div class="card">
     <h2 class="h2L">Listado de Rendimientos</h2>
+    <form method="GET" action="{{ route('rendimiento.index') }}" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+    <!-- Filtro de Usuario -->
+    <input type="text" name="usuario" value="{{ request('usuario') }}" placeholder="Nombre de Usuario">
+
+    <!-- Filtro de Entrenamiento -->
+    <input type="text" name="entrenamiento" value="{{ request('entrenamiento') }}" placeholder="Entrenamiento">
+
+    <!-- Filtro de Fecha Inicio -->
+    <input type="date" name="fecha_inicio" value="{{ request('fecha_inicio') }}" placeholder="Fecha Inicio">
+
+    <!-- Filtro de Fecha Fin -->
+    <input type="date" name="fecha_fin" value="{{ request('fecha_fin') }}" placeholder="Fecha Fin">
+
+    <!-- Botón de Enviar -->
+    <button type="submit">Filtrar</button>
+
+    <!-- Botón para limpiar filtros -->
+    <a href="{{ route('rendimiento.index') }}" class="btn-reset">Limpiar</a>
+</form>
+
 
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('rendimiento.create') }}" id="insert-btn" class="btn-insertar">+ Insertar Rendimiento</a>

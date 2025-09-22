@@ -26,6 +26,28 @@
 <div class="card">
     <h2 class="h2L">Listado de Notificaciones</h2>
 
+    <!-- Formulario de filtros -->
+    <form action="{{ route('notificaciones.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+        <input type="text" name="search" placeholder="Buscar título o mensaje" value="{{ request('search') }}">
+
+        <select name="usuario">
+            <option value="">Todos los usuarios</option>
+            @foreach($usuarios as $user)
+                <option value="{{ $user->id_usu }}" {{ request('usuario') == $user->id_usu ? 'selected' : '' }}>
+                    {{ $user->nombre }} {{ $user->apellido }}
+                </option>
+            @endforeach
+        </select>
+
+        <input type="date" name="fecha_min" value="{{ request('fecha_min') }}" placeholder="Desde">
+        <input type="date" name="fecha_max" value="{{ request('fecha_max') }}" placeholder="Hasta">
+
+        <button type="submit">Filtrar</button>
+        <a href="{{ route('notificaciones.index') }}" class="btn-reset" title="Limpiar filtros">
+            <i class="fas fa-sync-alt"></i>
+        </a>
+    </form>
+
     {{-- Botón para insertar --}}
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('notificaciones.create') }}" id="insert-btn" class="btn-insertar">
@@ -57,9 +79,9 @@
                 <td>
                     {{-- Botón Editar --}}
                     <a href="{{ route('notificaciones.edit', ['notificacion' => $notificacion->id_notificacion]) }}" 
-   id="edit-btn-{{ $notificacion->id_notificacion }}" class="btn-editar">
-    Editar
-</a>
+                        id="edit-btn-{{ $notificacion->id_notificacion }}" class="btn-editar">
+                        Editar
+                    </a>
                     <x-alert-edit :buttonId="'edit-btn-'.$notificacion->id_notificacion" />
 
                     {{-- Formulario Eliminar --}}
@@ -74,7 +96,7 @@
             @endforeach
         </tbody>
     </table>
-    
+
 </div>
 
 @endsection

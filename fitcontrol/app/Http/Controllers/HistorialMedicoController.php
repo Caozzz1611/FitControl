@@ -9,11 +9,37 @@ use Illuminate\Http\Request;
 class HistorialMedicoController extends Controller
 {
     // Listar todos los historiales
-    public function index()
-    {
-        $historiales = HistorialMedico::with('usuario')->paginate(10);
-        return view('historial.index', compact('historiales'));
+    public function index(Request $request)
+{
+    $query = HistorialMedico::with('usuario');
+
+    // Filtro por observaciones
+    if ($request->filled('search')) {
+        $query->where('observaciones', 'LIKE', "%{$request->search}%");
     }
+
+    // Filtro por usuario
+    if ($request->filled('usuario')) {
+        $query->where('id_usu_fk', $request->usuario);
+    }
+
+    // Filtro por fecha mínima
+    if ($request->filled('fecha_min')) {
+        $query->whereDate('fecha', '>=', $request->fecha_min);
+    }
+
+    // Filtro por fecha máxima
+    if ($request->filled('fecha_max')) {
+        $query->whereDate('fecha', '<=', $request->fecha_max);
+    }
+
+    $historiales = $query->paginate(10);
+
+    // Lista de usuarios para el filtro
+    $usuarios = Usuario::all();
+
+    return view('historial.index', compact('historiales', 'usuarios'));
+}
 
     // Mostrar formulario de creación
     public function create()

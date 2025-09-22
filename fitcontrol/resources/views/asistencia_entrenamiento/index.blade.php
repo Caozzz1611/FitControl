@@ -70,6 +70,27 @@
 
 <div class="card">
     <h2 class="h2L">Listado de Asistencias a Entrenamientos</h2>
+    <form method="GET" action="{{ route('asistencia_entrenamiento.index') }}" style="margin-bottom: 20px; display: flex; gap: 10px;">
+    <!-- Filtro por fecha de entrenamiento -->
+    <input type="date" name="fecha_entrenamiento" value="{{ request('fecha_entrenamiento') }}" placeholder="Fecha Entrenamiento">
+
+    <!-- Filtro por nombre de jugador -->
+    <input type="text" name="jugador" value="{{ request('jugador') }}" placeholder="Jugador">
+
+    <!-- Filtro por asistencia -->
+    <select name="asistio">
+        <option value="">Asistió</option>
+        <option value="1" {{ request('asistio') == '1' ? 'selected' : '' }}>Sí</option>
+        <option value="0" {{ request('asistio') == '0' ? 'selected' : '' }}>No</option>
+    </select>
+
+    <!-- Botón Filtrar -->
+    <button type="submit">Filtrar</button>
+
+    <!-- Botón Limpiar Filtros -->
+    <a href="{{ route('asistencia_entrenamiento.index') }}" class="btn-reset">Limpiar</a>
+</form>
+
 
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('asistencia_entrenamiento.create') }}" id="insert-btn" class="btn-insertar">+ Insertar Asistencia</a>

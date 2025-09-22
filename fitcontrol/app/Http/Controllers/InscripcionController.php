@@ -9,11 +9,40 @@ use Illuminate\Http\Request;
 
 class InscripcionController extends Controller
 {
-    public function index()
-    {
-        $inscripciones = Inscripcion::with(['usuario', 'torneo'])->get();
-        return view('inscripcion.index', compact('inscripciones'));
+    public function index(Request $request)
+{
+    $query = Inscripcion::with(['usuario', 'torneo']);
+
+    // Filtrar por usuario
+    if ($request->filled('usuario')) {
+        $query->whereHas('usuario', function($q) use ($request) {
+            $q->where('nombre', 'like', '%' . $request->usuario . '%');
+        });
     }
+
+    // Filtrar por torneo
+    if ($request->filled('torneo')) {
+        $query->whereHas('torneo', function($q) use ($request) {
+            $q->where('nombre', 'like', '%' . $request->torneo . '%');
+        });
+    }
+
+    // Filtrar por estado
+    if ($request->filled('estado')) {
+        $query->where('estado', $request->estado);
+    }
+
+    // Filtrar por fecha de inscripción
+    if ($request->filled('fecha_inscripcion')) {
+        $query->whereDate('fecha_inscripcion', $request->fecha_inscripcion);
+    }
+
+    // Paginación
+    $inscripciones = $query->paginate(10);
+
+    return view('inscripcion.index', compact('inscripciones'));
+}
+
 
     public function create()
     {

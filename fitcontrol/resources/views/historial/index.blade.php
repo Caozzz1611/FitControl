@@ -24,6 +24,27 @@
 
 <div class="card">
     <h2 class="h2L">Historial Médico</h2>
+    <form action="{{ route('historial.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+    <input type="text" name="search" placeholder="Buscar observaciones" value="{{ request('search') }}">
+
+    <select name="usuario">
+        <option value="">Todos los usuarios</option>
+        @foreach($usuarios as $usuario)
+            <option value="{{ $usuario->id_usu }}" {{ request('usuario') == $usuario->id_usu ? 'selected' : '' }}>
+                {{ $usuario->nombre }} {{ $usuario->apellido }}
+            </option>
+        @endforeach
+    </select>
+
+    <input type="date" name="fecha_min" value="{{ request('fecha_min') }}">
+    <input type="date" name="fecha_max" value="{{ request('fecha_max') }}">
+
+    <button type="submit">Filtrar</button>
+    <a href="{{ route('historial.index') }}" class="btn-reset" title="Limpiar filtros">
+        <i class="fas fa-sync-alt"></i>
+    </a>
+</form>
+
 
     {{-- Botón para insertar --}}
     <div style="height: 50px; margin-bottom: 15px;">

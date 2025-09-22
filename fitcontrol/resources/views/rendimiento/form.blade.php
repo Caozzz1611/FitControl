@@ -69,21 +69,18 @@
     button:hover {
         background: #0056b3;
     }
-    .btn-back {
-        grid-column: span 3;
-        display: inline-block;
-        margin-top: 10px;
-        padding: 10px 20px;
-        background: #6c757d;
-        color: white;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: bold;
-        transition: background 0.3s ease;
-    }
-    .btn-back:hover {
-        background: #565e64;
-    }
+   
+.btn-back {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #0056b3;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
 </style>
 
 <div class="p-6">

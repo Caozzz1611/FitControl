@@ -9,11 +9,37 @@ use Illuminate\Http\Request;
 
 class RendimientoController extends Controller
 {
-    public function index()
-    {
-        $rendimientos = Rendimiento::with(['usuario', 'entrenamiento'])->paginate(10);
-        return view('rendimiento.index', compact('rendimientos'));
+ 
+public function index(Request $request)
+{
+    // Inicializamos la consulta
+    $query = Rendimiento::with(['usuario', 'entrenamiento']);
+
+    // Filtro por usuario
+    if ($request->filled('usuario')) {
+        $query->whereHas('usuario', function($q) use ($request) {
+            $q->where('nombre', 'like', '%' . $request->usuario . '%');
+        });
     }
+
+    // Filtro por entrenamiento
+    if ($request->filled('entrenamiento')) {
+        $query->whereHas('entrenamiento', function($q) use ($request) {
+            $q->where('ubicacion', 'like', '%' . $request->entrenamiento . '%');
+        });
+    }
+
+    // Filtro por fecha (si existe)
+    if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
+        $query->whereBetween('fecha', [$request->fecha_inicio, $request->fecha_fin]);
+    }
+
+    // Paginación
+    $rendimientos = $query->paginate(10);
+
+    return view('rendimiento.index', compact('rendimientos'));
+}
+
 
    public function create() {
     $usuarios = Usuario::all();

@@ -11,11 +11,38 @@ use Illuminate\Database\QueryException;
 
 class PartidoController extends Controller
 {
-    public function index()
-    {
-        $partidos = Partido::with(['torneo', 'equipo'])->get();
-        return view('partido.index', compact('partidos'));
+
+public function index(Request $request)
+{
+    $query = Partido::with(['torneo', 'equipo']);
+
+    if ($request->filled('rival')) {
+        $query->where('rival', 'LIKE', "%{$request->rival}%");
     }
+
+    if ($request->filled('fecha_inicio')) {
+        $query->whereDate('fecha', '>=', $request->fecha_inicio);
+    }
+
+    if ($request->filled('fecha_fin')) {
+        $query->whereDate('fecha', '<=', $request->fecha_fin);
+    }
+
+    if ($request->filled('torneo')) {
+        $query->where('id_torneo_fk', $request->torneo);
+    }
+
+    if ($request->filled('equipo')) {
+        $query->where('id_equipo_fk', $request->equipo);
+    }
+
+    $partidos = $query->get(); // o paginate(10)
+    $torneos = Torneo::all();
+    $equipos = Equipo::all();
+
+    return view('partido.index', compact('partidos', 'torneos', 'equipos'));
+}
+
 
     public function create()
     {

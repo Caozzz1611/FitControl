@@ -56,7 +56,7 @@
 </a>
 
 <a href="{{ route('reportes') }}" class="menu-item ">
-    <i class="fas fa-home"></i><span>Reportes</span>
+<i class="fas fa-file-alt"></i><span>Reportes</span>
 </a>      </div>
     </div>
 

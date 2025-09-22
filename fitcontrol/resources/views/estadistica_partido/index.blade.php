@@ -32,6 +32,19 @@
 <div class="card">
     <h2 class="h2L">Listado de Estadísticas de Partidos</h2>
 
+    <form action="{{ route('estadistica_partido.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+    <input type="text" name="usuario" placeholder="Buscar por jugador" value="{{ request('usuario') }}">
+    <input type="text" name="rival" placeholder="Buscar por rival" value="{{ request('rival') }}">
+    <input type="number" name="goles_min" placeholder="Mín. goles" min="0" value="{{ request('goles_min') }}">
+    <input type="number" name="asistencias_min" placeholder="Mín. asistencias" min="0" value="{{ request('asistencias_min') }}">
+    
+    <button type="submit">Filtrar</button>
+    <a href="{{ route('estadistica_partido.index') }}" class="btn-reset" title="Limpiar filtros">
+        Limpiar
+    </a>
+</form>
+
+
     {{-- Botón para insertar --}}
     <div style="height: 50px; margin-bottom: 15px;">
        <a href="{{ route('estadistica_partido.create') }}" id="insert-btn" class="btn-insertar">

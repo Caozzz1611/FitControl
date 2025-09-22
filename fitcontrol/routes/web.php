@@ -21,6 +21,7 @@ use App\Http\Controllers\Auth\LoginController;
 
 
 
+
 Route::get('../view', function () {
     return view('welcome');
 });
@@ -139,13 +140,15 @@ Route::resource('asistencia_entrenamiento', AsistenciaEntrenamientoController::c
 Route::resource('inscripcion', InscripcionController::class);
 
 Route::resource('inscripcion_equipo', InscripcionEquipoController::class);
+Route::get('/usuarios/pdf', [PdfController::class, 'downloadUsuarios'])->name('usuarios.pdf');
+
 
 Route::get('/equipos/pdf', [PdfController::class, 'downloadEquipos'])->name('equipos.pdf');
 
 
 Route::get('/pagos/pdf', [PdfController::class, 'downloadPagos'])->name('pagos.pdf');
 
-
+Route::get('/torneo/pdf', [PdfController::class, 'downloadTorneos'])->name('torneo.pdf');
 
 
 
