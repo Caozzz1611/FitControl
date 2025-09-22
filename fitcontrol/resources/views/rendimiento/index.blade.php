@@ -52,7 +52,6 @@
         </tbody>
     </table>
 
-    {{ $rendimientos->links() }}
 </div>
 
 @endsection

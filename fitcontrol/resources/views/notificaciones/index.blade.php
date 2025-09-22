@@ -56,9 +56,10 @@
                 <td>{{ $notificacion->usuarioDestinatario->nombre ?? '-' }}</td>
                 <td>
                     {{-- Botón Editar --}}
-                    <a href="{{ route('notificaciones.edit', $notificacion) }}" id="edit-btn-{{ $notificacion->id_notificacion }}" class="btn-editar">
-                        Editar
-                    </a>
+                    <a href="{{ route('notificaciones.edit', ['notificacion' => $notificacion->id_notificacion]) }}" 
+   id="edit-btn-{{ $notificacion->id_notificacion }}" class="btn-editar">
+    Editar
+</a>
                     <x-alert-edit :buttonId="'edit-btn-'.$notificacion->id_notificacion" />
 
                     {{-- Formulario Eliminar --}}

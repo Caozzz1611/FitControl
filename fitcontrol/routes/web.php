@@ -16,6 +16,7 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\AsistenciaEntrenamientoController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\InscripcionEquipoController;
+use App\Http\Controllers\Auth\LoginController;
 
 
 
@@ -42,9 +43,8 @@ Route::resource('usuarios', UsuarioController::class);
 
 
 Route::resource('notificaciones', NotificacionController::class)
-    ->parameters(['notificaciones' => 'notificacion']); // <-- aquí cambiamos el parámetro
-
-
+      ->parameters(['notificaciones' => 'notificacion:id_notificacion']);
+      
 Route::resource('historial', HistorialMedicoController::class);
 
 
@@ -103,8 +103,8 @@ Route::middleware(['auth'])->group(function () {
     // O, mejor, usa una cadena de alias si lo prefieres
     Route::middleware([RoleMiddleware::class . ':jugador'])->group(function () {
         Route::get('/jugador', function () {
-            return "Bienvenido Jugador";
-        })->name('dashboard.jugador');
+            return view('jugador.dashboard');
+        })->name('jugador.dashboard');
     });
 
 Route::get('/entrenador', function () {
@@ -124,6 +124,15 @@ Route::resource('entrenamiento', EntrenamientoController::class);
 Route::resource('rendimiento', RendimientoController::class);
 
 Route::resource('pago', PagoController::class);
+// Para crear un nuevo pago
+Route::get('/pago/create', [PagoController::class, 'create'])->name('pago.create');
+
+// Para guardar el pago
+Route::post('/pago', [PagoController::class, 'store'])->name('pago.store');
+
+// Para listar pagos (si tienes lista)
+Route::get('/pago', [PagoController::class, 'index'])->name('pago.index');
+
 
 Route::resource('asistencia_entrenamiento', AsistenciaEntrenamientoController::class);
 
@@ -135,6 +144,12 @@ Route::get('/equipos/pdf', [PdfController::class, 'downloadEquipos'])->name('equ
 
 
 Route::get('/pagos/pdf', [PdfController::class, 'downloadPagos'])->name('pagos.pdf');
+
+
+
+
+
+
 
 
 

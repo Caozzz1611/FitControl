@@ -113,40 +113,154 @@
             font-weight: bold;
         }
     </style>
-<div class="form-group">
-    <label>Nombre del Equipo</label>
-    <input type="text" name="nombre_equipo" 
-           value="{{ old('nombre_equipo', optional($equipo)->nombre_equipo) }}" required>
-    <span class="hint">Ingrese el nombre completo del equipo.</span>
-</div>
+<form id="formEquipo" action="{{ isset($equipo) ? route('equipo.update', $equipo->id_equipo) : route('equipo.store') }}" method="POST" novalidate>
+    @csrf
+    @if(isset($equipo))
+        @method('PUT')
+    @endif
 
-<div class="form-group">
-    <label>Logo del Equipo (URL o nombre de archivo)</label>
-    <input type="text" name="logo_equipo" 
-           value="{{ old('logo_equipo', optional($equipo)->logo_equipo) }}">
-    <span class="hint">Ingrese la URL o el nombre del archivo del logo del equipo (opcional).</span>
-</div>
+    <!-- Nombre del Equipo -->
+    <div class="form-group">
+        <label>Nombre del Equipo</label>
+        <input 
+            type="text" 
+            name="nombre_equipo" 
+            value="{{ old('nombre_equipo', optional($equipo)->nombre_equipo) }}" 
+            required
+            pattern="[A-Za-z0-9\s]+" 
+            title="Debe ingresar solo texto y números."
+        >
+        @error('nombre_equipo')
+            <div class="error-message">{{ $message }}</div>
+        @enderror
+        <span class="hint">Ingrese el nombre completo del equipo.</span>
+    </div>
 
-<div class="form-group">
-    <label>Ubicación</label>
-    <input type="text" name="ubi_equipo" 
-           value="{{ old('ubi_equipo', optional($equipo)->ubi_equipo) }}">
-    <span class="hint">Ingrese la ciudad o región donde se encuentra el equipo.</span>
-</div>
+    <!-- Logo del Equipo -->
+    <div class="form-group">
+        <label>Logo del Equipo (URL o nombre de archivo)</label>
+        <input 
+            type="text" 
+            name="logo_equipo" 
+            value="{{ old('logo_equipo', optional($equipo)->logo_equipo) }}"
+            pattern="https?://.+|.+\.(jpg|jpeg|png|gif)"
+            title="Ingrese una URL válida o el nombre del archivo de imagen"
+        >
+        @error('logo_equipo')
+            <div class="error-message">{{ $message }}</div>
+        @enderror
+        <span class="hint">Ingrese la URL o el nombre del archivo del logo del equipo (opcional).</span>
+    </div>
 
-<div class="form-group">
-    <label>Contacto</label>
-    <input type="number" name="contacto_equipo" 
-           value="{{ old('contacto_equipo', optional($equipo)->contacto_equipo) }}">
-    <span class="hint">Ingrese un número de contacto del equipo.</span>
-</div>
+    <!-- Ubicación -->
+    <div class="form-group">
+        <label>Ubicación</label>
+        <input 
+            type="text" 
+            name="ubi_equipo" 
+            value="{{ old('ubi_equipo', optional($equipo)->ubi_equipo) }}"
+            required
+        >
+        @error('ubi_equipo')
+            <div class="error-message">{{ $message }}</div>
+        @enderror
+        <span class="hint">Ingrese la ciudad o región donde se encuentra el equipo.</span>
+    </div>
 
-<div class="form-group">
-    <label>Categoría</label>
-    <input type="number" name="categoria_equipo" 
-           value="{{ old('categoria_equipo', optional($equipo)->categoria_equipo) }}">
-    <span class="hint">Ingrese la categoría o nivel del equipo.</span>
-</div>
+    <!-- Contacto -->
+    <div class="form-group">
+        <label>Contacto</label>
+        <input 
+            type="number" 
+            name="contacto_equipo" 
+            value="{{ old('contacto_equipo', optional($equipo)->contacto_equipo) }}"
+            required
+            min="1000000" 
+            max="999999999999999" 
+        >
+        @error('contacto_equipo')
+            <div class="error-message">{{ $message }}</div>
+        @enderror
+        <span class="hint">Ingrese un número de contacto del equipo.</span>
+    </div>
 
-<button type="submit">Guardar</button>
-<a href="{{ url()->previous() }}" class="btn-back">← Volver</a>
+    <!-- Categoría -->
+    <div class="form-group">
+        <label>Categoría</label>
+        <input 
+            type="number" 
+            name="categoria_equipo" 
+            value="{{ old('categoria_equipo', optional($equipo)->categoria_equipo) }}"
+            required
+        >
+        @error('categoria_equipo')
+            <div class="error-message">{{ $message }}</div>
+        @enderror
+        <span class="hint">Ingrese la categoría o nivel del equipo.</span>
+    </div>
+
+    <button type="submit">Guardar</button>
+    <a href="{{ url()->previous() }}" class="btn-back">← Volver</a>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('formEquipo');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        let valid = true;
+
+        // Limpiar errores previos
+        form.querySelectorAll('.error-message').forEach(el => {
+            el.textContent = '';
+            el.style.display = 'none';
+        });
+
+        const nombreEquipo = form.nombre_equipo.value.trim();
+        const logoEquipo = form.logo_equipo.value.trim();
+        const ubicacion = form.ubi_equipo.value.trim();
+        const contacto = form.contacto_equipo.value.trim();
+        const categoria = form.categoria_equipo.value.trim();
+
+        // Validaciones
+
+        if (!nombreEquipo) {
+            const msg = form.querySelector('input[name="nombre_equipo"] + .error-message');
+            msg.textContent = 'El nombre del equipo es obligatorio.';
+            msg.style.display = 'block';
+            valid = false;
+        }
+
+        if (!logoEquipo) {
+            const msg = form.querySelector('input[name="logo_equipo"] + .error-message');
+            msg.textContent = 'El logo del equipo es opcional, pero si se ingresa debe ser una URL válida o nombre de archivo.';
+            msg.style.display = 'block';
+        }
+
+        if (!ubicacion) {
+            const msg = form.querySelector('input[name="ubi_equipo"] + .error-message');
+            msg.textContent = 'La ubicación es obligatoria.';
+            msg.style.display = 'block';
+            valid = false;
+        }
+
+        if (!contacto || contacto.length < 7) {
+            const msg = form.querySelector('input[name="contacto_equipo"] + .error-message');
+            msg.textContent = 'El número de contacto debe tener entre 7 y 15 dígitos.';
+            msg.style.display = 'block';
+            valid = false;
+        }
+
+        if (!categoria || isNaN(categoria)) {
+            const msg = form.querySelector('input[name="categoria_equipo"] + .error-message');
+            msg.textContent = 'La categoría debe ser un número.';
+            msg.style.display = 'block';
+            valid = false;
+        }
+
+        if (valid) form.submit();
+    });
+});
+</script>
+

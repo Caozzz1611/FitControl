@@ -1,10 +1,13 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Models\Partido;
-use App\Models\Torneo;
 use App\Models\Equipo;
+use App\Models\Partido;
+use App\Models\EstadisticaPartido;
+use App\Models\Torneo;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class PartidoController extends Controller
 {
@@ -60,7 +63,24 @@ class PartidoController extends Controller
 
     public function destroy(Partido $partido)
     {
-        $partido->delete();
-        return redirect()->route('partido.index')->with('success', 'Partido eliminado correctamente');
+        try {
+            // Verificar si existen estadísticas relacionadas con este partido
+            $estadisticas = EstadisticaPartido::where('id_partido_fk', $partido->id_partido)->count();
+
+            if ($estadisticas > 0) {
+                // Si existen estadísticas, muestra el mensaje de error y no elimina el partido
+                return redirect()->route('partido.index')
+                    ->with('error', 'No se puede eliminar este partido porque tiene estadísticas asociadas.');
+            }
+
+            // Si no existen estadísticas, proceder con la eliminación del partido
+            $partido->delete();
+            return redirect()->route('partido.index')
+                ->with('success', 'Partido eliminado correctamente');
+        } catch (QueryException $e) {
+            // Captura cualquier error de base de datos y muestra un mensaje de error
+            return redirect()->route('partido.index')
+                ->with('error', 'Error al intentar eliminar el partido: ' . $e->getMessage());
+        }
     }
 }

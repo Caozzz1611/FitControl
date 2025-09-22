@@ -8,9 +8,8 @@ use Illuminate\Http\Request;
 
 class PagoController extends Controller
 {
-  public function index()
+public function index()
 {
-    // Carga la relación 'usuario' para evitar consultas N+1
     $pagos = Pago::with('usuario')->get();
     return view('pago.index', compact('pagos'));
 }

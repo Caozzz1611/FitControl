@@ -9,16 +9,20 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-  public function handle(Request $request, Closure $next, ...$roles): Response
-{
-    // ...
-    $user = Auth::user();
+    public function handle(Request $request, Closure $next, ...$roles): Response
+    {
+        $user = Auth::user();
 
-    // Cambia $user->role a $user->rol para que coincida con tu base de datos
-    if (!in_array($user->rol, $roles)) {
-        abort(403, 'Acceso no autorizado.');
+        // Verifica si hay usuario autenticado
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión.');
+        }
+
+        // Verifica si el rol del usuario está en los permitidos
+        if (!in_array($user->rol, $roles)) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
+        return $next($request);
     }
-
-    return $next($request);
-}
 }

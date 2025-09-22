@@ -11,9 +11,7 @@ class InscripcionEquipoController extends Controller
 {
     public function index()
     {
-        // Traer inscripciones con usuario y equipo para evitar N+1
         $inscripciones = InscripcionEquipo::with(['usuario', 'equipo'])->get();
-
         return view('inscripcion_equipo.index', compact('inscripciones'));
     }
 
@@ -42,7 +40,13 @@ class InscripcionEquipoController extends Controller
     {
         $usuarios = Usuario::all();
         $equipos = Equipo::all();
-        return view('inscripcion_equipo.edit', compact('inscripcionEquipo', 'usuarios', 'equipos'));
+
+        // Cambiamos el nombre de la variable para que coincida con la vista
+        return view('inscripcion_equipo.edit', [
+            'inscripcion_equipo' => $inscripcionEquipo,
+            'usuarios' => $usuarios,
+            'equipos' => $equipos,
+        ]);
     }
 
     public function update(Request $request, InscripcionEquipo $inscripcionEquipo)
