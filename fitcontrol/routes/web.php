@@ -6,7 +6,6 @@ use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\HistorialMedicoController;
 use App\Http\Controllers\EquipoController;
-use App\Http\Controllers\TorneoController;
 use App\Http\Controllers\PartidoController;
 use App\Http\Controllers\CalendarioController;
 use App\Http\Controllers\EstadisticaPartidoController;
@@ -17,10 +16,7 @@ use App\Http\Controllers\AsistenciaEntrenamientoController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\InscripcionEquipoController;
 use App\Http\Controllers\Auth\LoginController;
-
-
-
-
+use App\Http\Controllers\TorneoController;
 
 Route::get('../view', function () {
     return view('welcome');
@@ -149,10 +145,4 @@ Route::get('/equipos/pdf', [PdfController::class, 'downloadEquipos'])->name('equ
 Route::get('/pagos/pdf', [PdfController::class, 'downloadPagos'])->name('pagos.pdf');
 
 Route::get('/torneo/pdf', [PdfController::class, 'downloadTorneos'])->name('torneo.pdf');
-
-
-
-
-
-
 
