@@ -17,7 +17,7 @@
         <!-- Perfil -->
         <div class="text-center mb-6">
           <img src="{{ asset('img/userrm.png') }}" alt="Jugador" class="w-24 h-24 mx-auto rounded-full">
-          <h2 class="mt-2 font-bold text-xl">Jugador Ejemplo</h2>
+          <h2 class="mt-2 font-bold text-xl">Jugador </h2>
           <p class="text-gray-500">Posición: Delantero</p>
         </div>
 

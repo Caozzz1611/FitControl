@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Hash;
 
@@ -27,12 +26,16 @@ class LoginController extends Controller
         // Buscar usuario por email
         $usuario = Usuario::where('email_usu', $request->email_usu)->first();
 
+        // Verificar contraseña
         if ($usuario && Hash::check($request->contra_usu, $usuario->contra_usu)) {
-            
-            // Loguear usuario manualmente (sin usar Auth::attempt)
-            session(['usuario_id' => $usuario->id_usu, 'rol' => $usuario->rol, 'nombre' => $usuario->nombre]);
+            // Guardar datos en sesión
+            session([
+                'usuario_id' => $usuario->id_usu,
+                'rol' => $usuario->rol,
+                'nombre' => $usuario->nombre
+            ]);
 
-            // Redireccionar según rol
+            // Redirigir según el rol
             switch ($usuario->rol) {
                 case 'admin':
                     return redirect()->route('dashboard');
@@ -43,8 +46,8 @@ class LoginController extends Controller
                 default:
                     return redirect()->route('login')->with('error', 'Rol no válido.');
             }
-
         } else {
+            // Credenciales incorrectas
             return redirect()->back()->with('error', 'Credenciales incorrectas.');
         }
     }
