@@ -17,10 +17,19 @@ use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\InscripcionEquipoController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\TorneoController;
+use App\Http\Controllers\Auth\RegisterController;
+
 
 Route::get('../view', function () {
     return view('welcome');
 });
+
+
+
+Route::get('/', function () {
+    return view('home');
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -146,3 +155,5 @@ Route::get('/pagos/pdf', [PdfController::class, 'downloadPagos'])->name('pagos.p
 
 Route::get('/torneo/pdf', [PdfController::class, 'downloadTorneos'])->name('torneo.pdf');
 
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);

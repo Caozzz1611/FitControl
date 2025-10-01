@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <title>Iniciar Sesión | FitControl</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registro de Usuario | FitControl</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -24,7 +24,7 @@
             padding: 1rem;
         }
 
-        .login-card {
+        .register-card {
             background-color: #fff;
             border-radius: 12px;
             padding: 2.5rem 2.5rem 3rem;
@@ -33,7 +33,7 @@
             width: 100%;
         }
 
-        .login-card h3 {
+        .register-card h3 {
             font-weight: 700;
             color: #333;
             text-align: center;
@@ -77,10 +77,10 @@
             pointer-events: none;
         }
 
-        .alert ul {
-            margin-bottom: 0;
-            padding-left: 1.25rem;
-            font-size: 0.9rem;
+        .error-text {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
         }
 
         .btn-primary {
@@ -105,30 +105,23 @@
             height: 45px;
             font-weight: 600;
         }
+
+        .error-messages {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
 
-    <div class="login-card">
-        <h3 class="text-center mb-4 fw-bold">Iniciar Sesión en FitControl</h3>
-
-        {{-- Mostrar mensajes de error o éxito --}}
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-            </div>
-        @endif
-
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-            </div>
-        @endif
-
+    <div class="register-card">
         @if ($errors->any())
-            <div class="alert alert-danger">
+            <div class="error-messages">
                 <ul class="mb-0">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -137,41 +130,54 @@
             </div>
         @endif
 
-        {{-- Formulario --}}
-        <form method="POST" action="{{ route('login.post') }}">
+        <form method="POST" action="{{ route('register') }}">
             @csrf
+            <h3>Registro de Usuario</h3>
+
             <div class="form-group">
-                <label for="email_usu">Correo electrónico</label>
-                <i class="bi bi-envelope-fill"></i>
-                <input id="email_usu" type="email" class="form-control" name="email_usu" required autofocus />
+                <label for="nombre">Nombre</label>
+                <i class="bi bi-person-fill"></i>
+                <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" class="form-control" required autofocus />
+                @error('nombre')
+                    <div class="error-text">{{ $message }}</div>
+                @enderror
             </div>
+
+            <div class="form-group">
+                <label for="email_usu">Correo Electrónico</label>
+                <i class="bi bi-envelope-fill"></i>
+                <input id="email_usu" type="email" name="email_usu" value="{{ old('email_usu') }}" class="form-control" required />
+                @error('email_usu')
+                    <div class="error-text">{{ $message }}</div>
+                @enderror
+            </div>
+
             <div class="form-group">
                 <label for="contra_usu">Contraseña</label>
                 <i class="bi bi-lock-fill"></i>
-                <input id="contra_usu" type="password" class="form-control" name="contra_usu" required />
+                <input id="contra_usu" type="password" name="contra_usu" class="form-control" required />
+                @error('contra_usu')
+                    <div class="error-text">{{ $message }}</div>
+                @enderror
             </div>
-            <button type="submit" class="btn btn-primary">Ingresar</button>
 
-            <a href="{{ route('register') }}" class="btn btn-outline-secondary mt-3">Registrarse</a>
-            <a href="{{ url('/') }}" class="btn btn-link w-100 text-center mt-3">
-    ← Volver al inicio
-</a>
+            <div class="form-group">
+                <label for="contra_usu_confirmation">Confirmar Contraseña</label>
+                <i class="bi bi-lock-fill"></i>
+                <input id="contra_usu_confirmation" type="password" name="contra_usu_confirmation" class="form-control" required />
+            </div>
 
+            <button type="submit" class="btn btn-primary">Registrarse</button>
+
+            <a href="{{ route('login') }}" class="btn btn-outline-secondary mt-3">Iniciar Sesión</a>
+            <!-- Botón volver al home -->
+        <a href="{{ url('/') }}" class="btn btn-link w-100 text-center mt-3">
+        ← Volver al inicio
+            </a>
         </form>
     </div>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Alertas auto-cierre -->
-    <script>
-        setTimeout(function () {
-            let alerts = document.querySelectorAll('.alert');
-            alerts.forEach(function(alert) {
-                let bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 5000);
-    </script>
 </body>
 </html>
