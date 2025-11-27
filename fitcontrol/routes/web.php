@@ -57,7 +57,7 @@ Route::resource('historial', HistorialMedicoController::class);
 Route::resource('equipo', EquipoController::class);
 
 
-Route::resource('torneo', TorneoController::class);
+Route::resource('torneo', TorneoController::class)->except(['show']);
 
 Route::resource('partido', PartidoController::class);
 

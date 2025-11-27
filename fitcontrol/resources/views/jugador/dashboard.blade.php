@@ -1,4 +1,4 @@
-@extends('layouts.app-jugador')
+@extends('layouts.app')
 
 @section('title', 'Dashboard Jugador')
 

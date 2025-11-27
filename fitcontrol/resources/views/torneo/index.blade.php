@@ -7,55 +7,54 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
-<!-- Script para mostrar alertas -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const notyf = new Notyf();
+document.addEventListener('DOMContentLoaded', function () {
+    const notyf = new Notyf();
 
-        @if(session('success'))
-            notyf.success("{{ session('success') }}");
-        @endif
+    @if(session('success'))
+        notyf.success("{{ session('success') }}");
+    @endif
 
-        @if(session('error'))
-            notyf.error("{{ session('error') }}");
-        @endif
-    });
+    @if(session('error'))
+        notyf.error("{{ session('error') }}");
+    @endif
+});
 </script>
 
 <div class="card">
     <h2 class="h2L">Listado de Torneos</h2>
 
     <form action="{{ route('torneo.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
-    <input type="text" name="search" placeholder="Buscar por nombre" value="{{ request('search') }}">
+        <input type="text" name="search" placeholder="Buscar por nombre" value="{{ request('search') }}">
+        <input type="date" name="fecha_inicio" value="{{ request('fecha_inicio') }}">
+        <input type="date" name="fecha_fin" value="{{ request('fecha_fin') }}">
 
-    <input type="date" name="fecha_inicio" value="{{ request('fecha_inicio') }}">
-    <input type="date" name="fecha_fin" value="{{ request('fecha_fin') }}">
+        {{-- Filtro por equipo solo para admin --}}
+        @if(Auth::user()->rol == 'admin')
+            <select name="equipo">
+                <option value="">Todos los organizadores</option>
+                @foreach($equipos as $equipo)
+                    <option value="{{ $equipo->id_equipo }}" {{ request('equipo') == $equipo->id_equipo ? 'selected' : '' }}>
+                        {{ $equipo->nombre_equipo }}
+                    </option>
+                @endforeach
+            </select>
+        @endif
 
-    <select name="equipo">
-        <option value="">Todos los organizadores</option>
-        @foreach($equipos as $equipo)
-            <option value="{{ $equipo->id_equipo }}" {{ request('equipo') == $equipo->id_equipo ? 'selected' : '' }}>
-                {{ $equipo->nombre_equipo }}
-            </option>
-        @endforeach
-    </select>
+        <button type="submit">Filtrar</button>
+        <a href="{{ route('torneo.index') }}" class="btn-reset" title="Limpiar filtros">
+            <i class="fas fa-sync-alt"></i>
+        </a>
+    </form>
 
-    <button type="submit">Filtrar</button>
-    <a href="{{ route('torneo.index') }}" class="btn-reset" title="Limpiar filtros">
-        <i class="fas fa-sync-alt"></i>
-    </a>
-</form>
-
-
- {{-- Botón para insertar --}}
-    <div style="height: 50px; margin-bottom: 15px;">
-       <a href="{{ route('torneo.create') }}" id="insert-btn" class="btn-insertar">
-    + Insertar Torneo
-</a>
-<x-alert-insert :buttonId="'insert-btn'" />
-<br>
-
-    </div>
+    {{-- Botón para insertar solo para admin --}}
+    @if(Auth::user()->rol == 'admin')
+        <div style="height: 50px; margin-bottom: 15px;">
+            <a href="{{ route('torneo.create') }}" id="insert-btn" class="btn-insertar">+ Insertar Torneo</a>
+            <x-alert-insert :buttonId="'insert-btn'" />
+            <br>
+        </div>
+    @endif
 
     <table class="tabla-usuarios">
         <thead>
@@ -67,7 +66,11 @@
                 <th>Fecha Inicio</th>
                 <th>Fecha Fin</th>
                 <th>Organizador Asociado</th>
-                <th>Acciones</th>
+
+                {{-- Columna acciones solo para admin --}}
+                @if(Auth::user()->rol == 'admin')
+                    <th>Acciones</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -80,26 +83,30 @@
                     <td>{{ $torneo->fecha_inicio }}</td>
                     <td>{{ $torneo->fecha_fin }}</td>
                     <td>{{ $torneo->equipo ? $torneo->equipo->nombre_equipo : '-' }}</td>
-                    <td>
-                        <a href="{{ route('torneo.edit', $torneo) }}" id="edit-btn-{{ $torneo->id_torneo }}" class="btn-editar">
-                            Editar
-                        </a>
-                        <x-alert-edit :buttonId="'edit-btn-'.$torneo->id_torneo" />
 
-                        <form id="delete-form-{{ $torneo->id_torneo }}" 
-                              action="{{ route('torneo.destroy', $torneo) }}" 
-                              method="POST" style="display:inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn-eliminar">Eliminar</button>
-                        </form>
-                        <x-alert-delete :formId="'delete-form-'.$torneo->id_torneo" />
-                    </td>
+                    {{-- Acciones solo para admin --}}
+                    @if(Auth::user()->rol == 'admin')
+                        <td>
+                            <a href="{{ route('torneo.edit', $torneo) }}" id="edit-btn-{{ $torneo->id_torneo }}" class="btn-editar">Editar</a>
+                            <x-alert-edit :buttonId="'edit-btn-'.$torneo->id_torneo" />
+
+                            <form id="delete-form-{{ $torneo->id_torneo }}" 
+                                  action="{{ route('torneo.destroy', $torneo) }}" 
+                                  method="POST" style="display:inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-eliminar">Eliminar</button>
+                            </form>
+                            <x-alert-delete :formId="'delete-form-'.$torneo->id_torneo" />
+                        </td>
+                    @endif
                 </tr>
             @empty
-                <tr><td colspan="8">No hay torneos registrados.</td></tr>
+                <tr>
+                    <td colspan="{{ Auth::user()->rol == 'admin' ? 8 : 7 }}" class="text-center">No hay torneos registrados.</td>
+                </tr>
             @endforelse
         </tbody>
     </table>
-    </div>
+</div>
 @endsection

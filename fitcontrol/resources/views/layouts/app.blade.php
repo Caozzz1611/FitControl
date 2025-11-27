@@ -19,10 +19,19 @@
     <div>
       <div class="header">
         <img src="img/userrm.png" alt="usuario">
-        <div class="info">
-          <strong>Berick Zambrano</strong><br>
-          Administrador
-        </div>
+        @if(Auth::check())
+<div class="info">
+  <strong>{{ Auth::user()->nombre }}</strong><br>
+  {{ ucfirst(Auth::user()->rol) }}
+</div>
+@else
+<div class="info">
+  <strong>Invitado</strong><br>
+  Rol desconocido
+</div>
+@endif
+
+
       </div>
       <img height="170px" width="170px" src="{{ asset('img/logo.png') }}" alt="Logo de FitControl">
 
@@ -30,34 +39,75 @@
 <a href="{{ route('dashboard') }}" class="menu-item active">
     <i class="fas fa-home"></i><span>Inicio</span>
 </a>
-        <div class="menu-item has-submenu">
-  <i class="fas fa-chart-bar"></i>
-  <span>Tablas <i class="fas fa-chevron-down"></i></span>
- <div class="submenu">
-    <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-user"></i> Usuarios</a>
-    <a href="{{ route('notificaciones.index') }}" class="submenu-item"><i class="fa-solid fa-bell"></i> Notificaciones</a>
-    <a href="{{ route('historial.index') }}" class="submenu-item"><i class="fa-solid fa-file-medical"></i> Historial Médico</a>
+    <div class="menu-item has-submenu">
+    <i class="fas fa-chart-bar"></i>
+    <span>Tablas <i class="fas fa-chevron-down"></i></span>
+
+    {{-- ============================
+          MENÚ PARA ADMIN
+    ============================= --}}
+    @if(Auth::user()->rol === 'admin')
+    <div class="submenu">
+        <a href="{{ route('usuarios.index') }}" class="submenu-item"><i class="fa-solid fa-user"></i> Usuarios</a>
+        <a href="{{ route('notificaciones.index') }}" class="submenu-item"><i class="fa-solid fa-bell"></i> Notificaciones</a>
+        <a href="{{ route('historial.index') }}" class="submenu-item"><i class="fa-solid fa-file-medical"></i> Historial Médico</a>
+        <a href="{{ route('equipo.index') }}" class="submenu-item"><i class="fa-solid fa-users"></i> Equipo</a>
+        <a href="{{ route('torneo.index') }}" class="submenu-item"><i class="fa-solid fa-trophy"></i> Torneo</a>
+        <a href="{{ route('partido.index') }}" class="submenu-item"><i class="fa-solid fa-futbol"></i> Partido</a>
+        <a href="{{ route('estadistica_partido.index') }}" class="submenu-item"><i class="fa-solid fa-chart-line"></i> Estadística Partido</a>
+        <a href="{{ route('entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-dumbbell"></i> Entrenamiento</a>
+        <a href="{{ route('rendimiento.index') }}" class="submenu-item"><i class="fa-solid fa-award"></i> Rendimiento</a>
+        <a href="{{ route('pago.index') }}" class="submenu-item"><i class="fa-solid fa-money-bill-wave"></i> Pago</a>
+        <a href="{{ route('asistencia_entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-calendar-check"></i> Asistencia Entrenamiento</a>
+        <a href="{{ route('inscripcion.index') }}" class="submenu-item"><i class="fa-solid fa-pen-to-square"></i> Inscripción</a>
+        <a href="{{ route('inscripcion_equipo.index') }}" class="submenu-item"><i class="fa-solid fa-users-gear"></i> Inscripción Equipo</a>
+    </div>
+    @endif
+
+    {{-- ============================
+          MENÚ PARA ENTRENADOR
+    ============================= --}}
+    @if(Auth::user()->rol === 'entrenador')
+    <div class="submenu">
+        <a href="{{ route('equipo.index') }}" class="submenu-item"><i class="fa-solid fa-users"></i> Equipo</a>
+        <a href="{{ route('entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-dumbbell"></i> Entrenamiento</a>
+        <a href="{{ route('rendimiento.index') }}" class="submenu-item"><i class="fa-solid fa-award"></i> Rendimiento</a>
+        <a href="{{ route('partido.index') }}" class="submenu-item"><i class="fa-solid fa-futbol"></i> Partido</a>
+        <a href="{{ route('estadistica_partido.index') }}" class="submenu-item"><i class="fa-solid fa-chart-line"></i> Estadísticas Partido</a>
+        <a href="{{ route('asistencia_entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-calendar-check"></i> Asistencia</a>
+        <a href="{{ route('historial.index') }}" class="submenu-item"><i class="fa-solid fa-file-medical"></i> Historial Médico</a>
+    </div>
+    @endif
+
+    {{-- ============================
+          MENÚ PARA JUGADOR
+    ============================= --}}
+    @if(Auth::user()->rol === 'jugador')
+    <div class="submenu">
     <a href="{{ route('equipo.index') }}" class="submenu-item"><i class="fa-solid fa-users"></i> Equipo</a>
-    <a href="{{ route('torneo.index') }}" class="submenu-item"><i class="fa-solid fa-trophy"></i> Torneo</a>
-    <a href="{{ route('partido.index') }}" class="submenu-item"><i class="fa-solid fa-futbol"></i> Partido</a>
-    <a href="{{ route('estadistica_partido.index') }}" class="submenu-item"><i class="fa-solid fa-chart-line"></i> Estadistica Partido</a>
     <a href="{{ route('entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-dumbbell"></i> Entrenamiento</a>
     <a href="{{ route('rendimiento.index') }}" class="submenu-item"><i class="fa-solid fa-award"></i> Rendimiento</a>
-    <a href="{{ route('pago.index') }}" class="submenu-item"><i class="fa-solid fa-money-bill-wave"></i> Pago</a>
-    <a href="{{ route('asistencia_entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-calendar-check"></i> Asistencia Entrenamiento</a>
-    <a href="{{ route('inscripcion.index') }}" class="submenu-item"><i class="fa-solid fa-pen-to-square"></i> Inscripcion</a>
-    <a href="{{ route('inscripcion_equipo.index') }}" class="submenu-item"><i class="fa-solid fa-users-gear"></i> Inscripcion Equipo</a>
+    <a href="{{ route('partido.index') }}" class="submenu-item"><i class="fa-solid fa-futbol"></i> Partido</a>
+    <a href="{{ route('estadistica_partido.index') }}" class="submenu-item"><i class="fa-solid fa-chart-line"></i> Estadísticas Partido</a>
+    <a href="{{ route('asistencia_entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-calendar-check"></i> Asistencia</a>
+    <a href="{{ route('historial.index') }}" class="submenu-item"><i class="fa-solid fa-file-medical"></i> Historial Médico</a>
+    <a href="{{ route('notificaciones.index') }}" class="submenu-item"><i class="fa-solid fa-bell"></i> Notificaciones</a>
+    </div>
+    @endif
 </div>
 
-</div>
 
 <a href="{{ route('calendario.index') }}" class="menu-item ">
     <i class="fas fa-bell"></i><span>Calendario</span>
 </a>
-
-<a href="{{ route('reportes') }}" class="menu-item ">
-<i class="fas fa-file-alt"></i><span>Reportes</span>
-</a>      </div>
+@auth
+    @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
+        <a href="{{ route('reportes') }}" class="menu-item">
+            <i class="fas fa-file-alt"></i><span>Reportes</span>
+        </a>
+    @endif
+@endauth
+   </div>
     </div>
 
     <div class="bottom">
