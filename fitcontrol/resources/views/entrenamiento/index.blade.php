@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -47,14 +49,52 @@
 <div class="card">
     <h2 class="h2L">Listado de Entrenamientos</h2>
 
-    <form method="GET" action="{{ route('entrenamiento.index') }}" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
-    <input type="date" name="fecha" value="{{ request('fecha') }}" placeholder="Fecha">
-    <input type="time" name="hora" value="{{ request('hora') }}" placeholder="Hora">
-    <input type="text" name="ubicacion" value="{{ request('ubicacion') }}" placeholder="Ubicación">
-    <input type="text" name="equipo" value="{{ request('equipo') }}" placeholder="Equipo">
+   <form method="GET" 
+      action="{{ route('entrenamiento.index') }}"
+      class="d-flex flex-wrap gap-2 mb-3"
+      autocomplete="off">
 
-    <button type="submit">Filtrar</button>
-    <a href="{{ route('entrenamiento.index') }}" class="btn-reset">Limpiar</a>
+    <!-- Fecha -->
+    <input type="date" 
+           name="fecha" 
+           value="{{ request('fecha') }}"
+           class="form-control form-control-sm"
+           style="width: 150px">
+
+    <!-- Hora -->
+    <input type="time" 
+           name="hora" 
+           value="{{ request('hora') }}"
+           class="form-control form-control-sm"
+           style="width: 130px">
+
+    <!-- Ubicación -->
+    <input type="text" 
+           name="ubicacion" 
+           value="{{ request('ubicacion') }}"
+           placeholder="Ubicación"
+           class="form-control form-control-sm"
+           style="width: 180px">
+
+    <!-- Equipo -->
+    <input type="text" 
+           name="equipo" 
+           value="{{ request('equipo') }}"
+           placeholder="Equipo"
+           class="form-control form-control-sm"
+           style="width: 160px ">
+
+    <!-- Botón Filtrar -->
+    <button type="submit" 
+            class="btn btn-primary btn-sm">
+        Filtrar
+    </button>
+
+    <!-- Botón Limpiar -->
+    <a href="{{ route('entrenamiento.index') }}" 
+       class="btn btn-secondary btn-sm">
+        Limpiar
+    </a>
 </form>
 
 

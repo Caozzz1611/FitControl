@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -45,26 +47,36 @@
 
 <div class="card">
     <h2>Listado de Pagos</h2>
-    <form method="GET" action="{{ route('pago.index') }}" style="margin-bottom: 20px; display: flex; gap: 10px;">
-    <!-- Filtro por fecha -->
-    <input type="date" name="fecha_pago" value="{{ request('fecha_pago') }}" placeholder="Fecha Pago">
+   <form method="GET" action="{{ route('pago.index') }}" class="input-group mb-3 shadow-sm" autocomplete="off">
 
-    <!-- Filtro por estado -->
-    <select name="estado">
+    <!-- Fecha de pago -->
+    <input type="date" name="fecha_pago" class="form-control" 
+           value="{{ request('fecha_pago') }}" placeholder="Fecha Pago">
+
+    <!-- Estado -->
+    <select name="estado" class="form-select">
         <option value="">Estado</option>
         <option value="pendiente" {{ request('estado') == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
         <option value="completado" {{ request('estado') == 'completado' ? 'selected' : '' }}>Completado</option>
         <option value="cancelado" {{ request('estado') == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
     </select>
 
-    <!-- Filtro por usuario -->
-    <input type="text" name="usuario" value="{{ request('usuario') }}" placeholder="Nombre de Usuario">
+    <!-- Usuario -->
+    <input type="text" name="usuario" class="form-control" 
+           value="{{ request('usuario') }}" placeholder="Nombre de Usuario">
 
-    <!-- Botón de Filtrar -->
-    <button type="submit">Filtrar</button>
+    <!-- Botón Filtrar -->
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
 
-    <!-- Botón de limpiar filtros -->
-    <a href="{{ route('pago.index') }}" class="btn-reset">Limpiar</a>
+    <!-- Botón Limpiar -->
+    <button>
+        <a href="{{ route('pago.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise"></i>
+        </a>
+    </button>
+
 </form>
 
 

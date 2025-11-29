@@ -7,6 +7,8 @@
 <!-- Incluyendo Notyf -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 
 <!-- Script para mostrar alertas -->
 <script>
@@ -27,23 +29,43 @@
     <h2 class="h2L">Listado de Usuarios</h2>
 
     
-<form action="{{ route('usuarios.index') }}" method="GET" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
-    <input type="text" name="search" placeholder="Buscar nombre, apellido o email" value="{{ request('search') }}">
+<form action="{{ route('usuarios.index') }}" method="GET" class="input-group mb-3 shadow-sm" autocomplete="off">
 
-    <select name="rol">
+    <!-- Buscar nombre, apellido o email -->
+    <input type="text" name="search" class="form-control" 
+           placeholder="Buscar nombre, apellido o email" 
+           value="{{ request('search') }}">
+
+    <!-- Rol -->
+    <select name="rol" class="form-select">
         <option value="">Todos los roles</option>
         <option value="admin" {{ request('rol') == 'admin' ? 'selected' : '' }}>Admin</option>
         <option value="jugador" {{ request('rol') == 'jugador' ? 'selected' : '' }}>Jugador</option>
         <option value="entrenador" {{ request('rol') == 'entrenador' ? 'selected' : '' }}>Entrenador</option>
     </select>
 
-    <input type="number" name="edad_min" placeholder="Edad mínima" value="{{ request('edad_min') }}">
-    <input type="number" name="edad_max" placeholder="Edad máxima" value="{{ request('edad_max') }}">
+    <!-- Edad mínima -->
+    <input type="number" name="edad_min" class="form-control" 
+           placeholder="Edad mín" value="{{ request('edad_min') }}">
 
-    <button type="submit">Filtrar</button>
-<a href="{{ route('usuarios.index') }}" class="btn-reset" title="Limpiar filtros">
-        <i class="fas fa-sync-alt"></i>
-    </a></form>
+    <!-- Edad máxima -->
+    <input type="number" name="edad_max" class="form-control" 
+           placeholder="Edad máx" value="{{ request('edad_max') }}">
+
+    <!-- Botón Filtrar -->
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
+
+    <!-- Botón Limpiar -->
+    <button>
+        <a href="{{ route('usuarios.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise"></i>
+        </a>
+    </button>
+
+</form>
+
 
   {{-- Botón para insertar --}}
     <div style="height: 50px; margin-bottom: 15px;">

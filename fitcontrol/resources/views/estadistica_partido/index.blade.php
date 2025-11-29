@@ -7,8 +7,7 @@
 <!-- Incluyendo Notyf -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-
-<!-- Incluyendo SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -32,18 +31,37 @@
 <div class="card">
     <h2 class="h2L">Listado de Estadísticas de Partidos</h2>
 
-    <form action="{{ route('estadistica_partido.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
-    <input type="text" name="usuario" placeholder="Buscar por jugador" value="{{ request('usuario') }}">
-    <input type="text" name="rival" placeholder="Buscar por rival" value="{{ request('rival') }}">
-    <input type="number" name="goles_min" placeholder="Mín. goles" min="0" value="{{ request('goles_min') }}">
-    <input type="number" name="asistencias_min" placeholder="Mín. asistencias" min="0" value="{{ request('asistencias_min') }}">
-    
-    <button type="submit">Filtrar</button>
-    <a href="{{ route('estadistica_partido.index') }}" class="btn-reset" title="Limpiar filtros">
-        Limpiar
-    </a>
-</form>
+   <form action="{{ route('estadistica_partido.index') }}" method="GET" class="input-group mb-3 shadow-sm" autocomplete="off">
 
+    <!-- Jugador -->
+    <input type="text" name="usuario" class="form-control" 
+           placeholder="Buscar por jugador" value="{{ request('usuario') }}">
+
+    <!-- Rival -->
+    <input type="text" name="rival" class="form-control" 
+           placeholder="Buscar por rival" value="{{ request('rival') }}">
+
+    <!-- Goles mínimos -->
+    <input type="number" name="goles_min" class="form-control" 
+           placeholder="Mín. goles" min="0" value="{{ request('goles_min') }}">
+
+    <!-- Asistencias mínimas -->
+    <input type="number" name="asistencias_min" class="form-control" 
+           placeholder="Mín. asistencias" min="0" value="{{ request('asistencias_min') }}">
+
+    <!-- Botón Filtrar -->
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
+
+    <!-- Botón Limpiar -->
+    <button>
+        <a href="{{ route('estadistica_partido.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise"></i>
+        </a>
+    </button>
+
+</form>
 
     {{-- Botón para insertar --}}
     <div style="height: 50px; margin-bottom: 15px;">

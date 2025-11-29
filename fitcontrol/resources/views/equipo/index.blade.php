@@ -6,6 +6,8 @@
 <!-- Incluyendo Notyf -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 
 
 <script>
@@ -25,25 +27,41 @@
 
 <div class="card">
     <h2>Listado de Equipos</h2>
-    <form action="{{ route('equipo.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
-    <input type="text" name="search" placeholder="Buscar nombre de equipo" value="{{ request('search') }}">
+   <form action="{{ route('equipo.index') }}" method="GET" class="input-group mb-3 shadow-sm" autocomplete="off">
 
-    <input type="text" name="ubicacion" placeholder="Ubicación" value="{{ request('ubicacion') }}">
+    <!-- Nombre del equipo -->
+    <input type="text" name="search" class="form-control" 
+           placeholder="Nombre del equipo" value="{{ request('search') }}">
 
-    <select name="categoria">
-        <option value="">Todas las categorías</option>
+    <!-- Ubicación -->
+    <input type="text" name="ubicacion" class="form-control" 
+           placeholder="Ubicación" value="{{ request('ubicacion') }}">
+
+    <!-- Categoría -->
+    <select name="categoria" class="form-select">
+        <option value="">Categoría</option>
         @foreach($categorias as $categoria)
-            <option value="{{ $categoria }}" {{ request('categoria') == $categoria ? 'selected' : '' }}>
+            <option value="{{ $categoria }}" 
+                {{ request('categoria') == $categoria ? 'selected' : '' }}>
                 {{ $categoria }}
             </option>
         @endforeach
     </select>
 
-    <button type="submit">Filtrar</button>
-    <a href="{{ route('equipo.index') }}" class="btn-reset" title="Limpiar filtros">
-        <i class="fas fa-sync-alt"></i>
-    </a>
+    <!-- Botón Buscar -->
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
+
+    <!-- Botón Limpiar -->
+    <button>
+        <a href="{{ route('equipo.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise"></i>
+        </a>
+    </button>
+
 </form>
+
 
     {{-- Botón para insertar --}}
     <div style="height: 50px; margin-bottom: 15px;">

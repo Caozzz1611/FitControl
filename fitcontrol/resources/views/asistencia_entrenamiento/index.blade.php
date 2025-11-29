@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -70,25 +71,35 @@
 
 <div class="card">
     <h2 class="h2L">Listado de Asistencias a Entrenamientos</h2>
-    <form method="GET" action="{{ route('asistencia_entrenamiento.index') }}" style="margin-bottom: 20px; display: flex; gap: 10px;">
-    <!-- Filtro por fecha de entrenamiento -->
-    <input type="date" name="fecha_entrenamiento" value="{{ request('fecha_entrenamiento') }}" placeholder="Fecha Entrenamiento">
+<form action="{{ route('asistencia_entrenamiento.index') }}" method="GET" class="input-group mb-3 shadow-sm" autocomplete="off">
 
-    <!-- Filtro por nombre de jugador -->
-    <input type="text" name="jugador" value="{{ request('jugador') }}" placeholder="Jugador">
+    <!-- Fecha -->
+    <input type="date" name="fecha_entrenamiento" class="form-control" 
+           value="{{ request('fecha_entrenamiento') }}" 
+           placeholder="Fecha">
 
-    <!-- Filtro por asistencia -->
-    <select name="asistio">
+    <!-- Jugador -->
+    <input type="text" name="jugador" class="form-control" 
+           value="{{ request('jugador') }}" 
+           placeholder="Jugador">
+
+    <!-- Asistencia -->
+    <select name="asistio" class="form-select">
         <option value="">Asistió</option>
         <option value="1" {{ request('asistio') == '1' ? 'selected' : '' }}>Sí</option>
         <option value="0" {{ request('asistio') == '0' ? 'selected' : '' }}>No</option>
     </select>
 
     <!-- Botón Filtrar -->
-    <button type="submit">Filtrar</button>
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
 
-    <!-- Botón Limpiar Filtros -->
-    <a href="{{ route('asistencia_entrenamiento.index') }}" class="btn-reset">Limpiar</a>
+    <!-- Botón Limpiar -->
+   <button><a href="{{ route('asistencia_entrenamiento.index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-clockwise"></i>
+    </a></button> 
+
 </form>
 
 

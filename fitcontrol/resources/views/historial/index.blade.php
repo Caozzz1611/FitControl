@@ -7,6 +7,8 @@
 <!-- Incluyendo Notyf -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -24,10 +26,14 @@
 
 <div class="card">
     <h2 class="h2L">Historial Médico</h2>
-    <form action="{{ route('historial.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
-    <input type="text" name="search" placeholder="Buscar observaciones" value="{{ request('search') }}">
+    <form action="{{ route('historial.index') }}" method="GET" class="input-group mb-3 shadow-sm" autocomplete="off">
 
-    <select name="usuario">
+    <!-- Buscar observaciones -->
+    <input type="text" name="search" class="form-control" 
+           placeholder="Buscar observaciones" value="{{ request('search') }}">
+
+    <!-- Usuario -->
+    <select name="usuario" class="form-select">
         <option value="">Todos los usuarios</option>
         @foreach($usuarios as $usuario)
             <option value="{{ $usuario->id_usu }}" {{ request('usuario') == $usuario->id_usu ? 'selected' : '' }}>
@@ -36,15 +42,27 @@
         @endforeach
     </select>
 
-    <input type="date" name="fecha_min" value="{{ request('fecha_min') }}">
-    <input type="date" name="fecha_max" value="{{ request('fecha_max') }}">
+    <!-- Fecha mínima -->
+    <input type="date" name="fecha_min" class="form-control" 
+           value="{{ request('fecha_min') }}">
 
-    <button type="submit">Filtrar</button>
-    <a href="{{ route('historial.index') }}" class="btn-reset" title="Limpiar filtros">
-        <i class="fas fa-sync-alt"></i>
-    </a>
+    <!-- Fecha máxima -->
+    <input type="date" name="fecha_max" class="form-control" 
+           value="{{ request('fecha_max') }}">
+
+    <!-- Botón Filtrar -->
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
+
+    <!-- Botón Limpiar -->
+    <button>
+        <a href="{{ route('historial.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise"></i>
+        </a>
+    </button>
+
 </form>
-
 
     {{-- Botón para insertar --}}
     <div style="height: 50px; margin-bottom: 15px;">

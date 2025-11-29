@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -52,30 +54,40 @@
 <div class="card">
     <h2 class="h2L">Listado de Inscripciones a Equipos</h2>
 
-    <!-- Filtros -->
-    <form method="GET" action="{{ route('inscripcion_equipo.index') }}" style="margin-bottom: 20px; display: flex; gap: 10px;">
-        <!-- Filtro por usuario -->
-        <input type="text" name="usuario" value="{{ request('usuario') }}" placeholder="Buscar Usuario" class="form-control">
+   <form method="GET" action="{{ route('inscripcion_equipo.index') }}" class="input-group mb-3 shadow-sm" autocomplete="off">
 
-        <!-- Filtro por equipo -->
-        <input type="text" name="equipo" value="{{ request('equipo') }}" placeholder="Buscar Equipo" class="form-control">
+    <!-- Usuario -->
+    <input type="text" name="usuario" class="form-control" 
+           value="{{ request('usuario') }}" placeholder="Buscar Usuario">
 
-        <!-- Filtro por estado -->
-        <select name="estado" class="form-control">
-            <option value="">Selecciona Estado</option>
-            <option value="pendiente" {{ request('estado') == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
-            <option value="completado" {{ request('estado') == 'completado' ? 'selected' : '' }}>Completado</option>
-        </select>
+    <!-- Equipo -->
+    <input type="text" name="equipo" class="form-control" 
+           value="{{ request('equipo') }}" placeholder="Buscar Equipo">
 
-        <!-- Filtro por fecha -->
-        <input type="date" name="fecha_inscripcion" value="{{ request('fecha_inscripcion') }}" class="form-control">
+    <!-- Estado -->
+    <select name="estado" class="form-select">
+        <option value="">Selecciona Estado</option>
+        <option value="pendiente" {{ request('estado') == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+        <option value="completado" {{ request('estado') == 'completado' ? 'selected' : '' }}>Completado</option>
+    </select>
 
-        <!-- Botón Filtrar -->
-        <button type="submit" class="btn btn-primary">Filtrar</button>
+    <!-- Fecha de inscripción -->
+    <input type="date" name="fecha_inscripcion" class="form-control" 
+           value="{{ request('fecha_inscripcion') }}">
 
-        <!-- Botón Limpiar Filtros -->
-        <a href="{{ route('inscripcion_equipo.index') }}" class="btn btn-secondary">Limpiar</a>
-    </form>
+    <!-- Botón Filtrar -->
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
+
+    <!-- Botón Limpiar -->
+    <button>
+        <a href="{{ route('inscripcion_equipo.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise"></i>
+        </a>
+    </button>
+
+</form>
 
     <!-- Insertar Nueva Inscripción -->
     <div style="height: 50px; margin-bottom: 15px;">

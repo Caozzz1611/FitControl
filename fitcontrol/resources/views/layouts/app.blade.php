@@ -18,7 +18,7 @@
   <div class="sidebar" id="sidebar">
     <div>
       <div class="header">
-        <img src="img/userrm.png" alt="usuario">
+        <img src="img/user.png" alt="usuario">
         @if(Auth::check())
 <div class="info">
   <strong>{{ Auth::user()->nombre }}</strong><br>
@@ -33,7 +33,7 @@
 
 
       </div>
-      <img height="170px" width="170px" src="{{ asset('img/logo.png') }}" alt="Logo de FitControl">
+      <img height="150px" width="150px" src="{{ asset('img/logo.png') }}" alt="Logo de FitControl">
 
       <div class="menu">
 <a href="{{ route('dashboard') }}" class="menu-item active">
@@ -69,6 +69,7 @@
     ============================= --}}
     @if(Auth::user()->rol === 'entrenador')
     <div class="submenu">
+         <a href="{{ route('torneo.index') }}" class="submenu-item"><i class="fa-solid fa-trophy"></i> Torneo</a>
         <a href="{{ route('equipo.index') }}" class="submenu-item"><i class="fa-solid fa-users"></i> Equipo</a>
         <a href="{{ route('entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-dumbbell"></i> Entrenamiento</a>
         <a href="{{ route('rendimiento.index') }}" class="submenu-item"><i class="fa-solid fa-award"></i> Rendimiento</a>

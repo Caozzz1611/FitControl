@@ -3,29 +3,42 @@
 @section('title', 'Listado de Rendimientos')
 
 @section('content')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 
 <div class="card">
     <h2 class="h2L">Listado de Rendimientos</h2>
-    <form method="GET" action="{{ route('rendimiento.index') }}" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
-    <!-- Filtro de Usuario -->
-    <input type="text" name="usuario" value="{{ request('usuario') }}" placeholder="Nombre de Usuario">
+  <form method="GET" action="{{ route('rendimiento.index') }}" class="input-group mb-3 shadow-sm" autocomplete="off">
 
-    <!-- Filtro de Entrenamiento -->
-    <input type="text" name="entrenamiento" value="{{ request('entrenamiento') }}" placeholder="Entrenamiento">
+    <!-- Usuario -->
+    <input type="text" name="usuario" class="form-control" 
+           value="{{ request('usuario') }}" placeholder="Nombre de Usuario">
 
-    <!-- Filtro de Fecha Inicio -->
-    <input type="date" name="fecha_inicio" value="{{ request('fecha_inicio') }}" placeholder="Fecha Inicio">
+    <!-- Entrenamiento -->
+    <input type="text" name="entrenamiento" class="form-control" 
+           value="{{ request('entrenamiento') }}" placeholder="Entrenamiento">
 
-    <!-- Filtro de Fecha Fin -->
-    <input type="date" name="fecha_fin" value="{{ request('fecha_fin') }}" placeholder="Fecha Fin">
+    <!-- Fecha Inicio -->
+    <input type="date" name="fecha_inicio" class="form-control" 
+           value="{{ request('fecha_inicio') }}" placeholder="Fecha Inicio">
 
-    <!-- Botón de Enviar -->
-    <button type="submit">Filtrar</button>
+    <!-- Fecha Fin -->
+    <input type="date" name="fecha_fin" class="form-control" 
+           value="{{ request('fecha_fin') }}" placeholder="Fecha Fin">
 
-    <!-- Botón para limpiar filtros -->
-    <a href="{{ route('rendimiento.index') }}" class="btn-reset">Limpiar</a>
+    <!-- Botón Filtrar -->
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
+
+    <!-- Botón Limpiar -->
+    <button>
+        <a href="{{ route('rendimiento.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise"></i>
+        </a>
+    </button>
+
 </form>
-
 
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('rendimiento.create') }}" id="insert-btn" class="btn-insertar">+ Insertar Rendimiento</a>

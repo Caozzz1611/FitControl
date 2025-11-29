@@ -3,7 +3,7 @@
   --bg-dark: #000000;
   --text-light: #1e1e2f;
   --text-dark: #fff;
-  --primary: #3cb4ec;
+  --primary: #1976D2;
   --transition: all 0.3s ease;
 }
 
@@ -353,7 +353,7 @@ input[type="checkbox"]:checked::before {
 }
 
 .tabla-usuarios tr:hover {
-    background: #1976d27a;
+    background: #1979d27a;
 }
 
 .btn-insertar {

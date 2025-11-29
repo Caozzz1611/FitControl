@@ -7,6 +7,8 @@
 <!-- Incluyendo Notyf -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 
 <!-- Script para mostrar alertas -->
 <script>
@@ -27,26 +29,43 @@
     <h2 class="h2L">Listado de Notificaciones</h2>
 
     <!-- Formulario de filtros -->
-    <form action="{{ route('notificaciones.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
-        <input type="text" name="search" placeholder="Buscar título o mensaje" value="{{ request('search') }}">
+   <form action="{{ route('notificaciones.index') }}" method="GET" class="input-group mb-3 shadow-sm" autocomplete="off">
 
-        <select name="usuario">
-            <option value="">Todos los usuarios</option>
-            @foreach($usuarios as $user)
-                <option value="{{ $user->id_usu }}" {{ request('usuario') == $user->id_usu ? 'selected' : '' }}>
-                    {{ $user->nombre }} {{ $user->apellido }}
-                </option>
-            @endforeach
-        </select>
+    <!-- Buscar título o mensaje -->
+    <input type="text" name="search" class="form-control" 
+           placeholder="Buscar título o mensaje" value="{{ request('search') }}">
 
-        <input type="date" name="fecha_min" value="{{ request('fecha_min') }}" placeholder="Desde">
-        <input type="date" name="fecha_max" value="{{ request('fecha_max') }}" placeholder="Hasta">
+    <!-- Usuario -->
+    <select name="usuario" class="form-select">
+        <option value="">Todos los usuarios</option>
+        @foreach($usuarios as $user)
+            <option value="{{ $user->id_usu }}" {{ request('usuario') == $user->id_usu ? 'selected' : '' }}>
+                {{ $user->nombre }} {{ $user->apellido }}
+            </option>
+        @endforeach
+    </select>
 
-        <button type="submit">Filtrar</button>
-        <a href="{{ route('notificaciones.index') }}" class="btn-reset" title="Limpiar filtros">
-            <i class="fas fa-sync-alt"></i>
+    <!-- Fecha mínima -->
+    <input type="date" name="fecha_min" class="form-control" 
+           value="{{ request('fecha_min') }}" placeholder="Desde">
+
+    <!-- Fecha máxima -->
+    <input type="date" name="fecha_max" class="form-control" 
+           value="{{ request('fecha_max') }}" placeholder="Hasta">
+
+    <!-- Botón Filtrar -->
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
+
+    <!-- Botón Limpiar -->
+    <button>
+        <a href="{{ route('notificaciones.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise"></i>
         </a>
-    </form>
+    </button>
+
+</form>
 
     {{-- Botón para insertar --}}
     <div style="height: 50px; margin-bottom: 15px;">

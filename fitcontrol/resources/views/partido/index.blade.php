@@ -6,6 +6,8 @@
 <!-- Incluyendo Notyf -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 
 <!-- Script para mostrar alertas -->
 <script>
@@ -25,13 +27,22 @@
 <div class="card">
     <h2 class="h2L">Listado de Partidos</h2>
 
-    <form action="{{ route('partido.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
-    <input type="text" name="rival" placeholder="Buscar por rival" value="{{ request('rival') }}">
-    
-    <input type="date" name="fecha_inicio" value="{{ request('fecha_inicio') }}">
-    <input type="date" name="fecha_fin" value="{{ request('fecha_fin') }}">
+   <form action="{{ route('partido.index') }}" method="GET" class="input-group mb-3 shadow-sm" autocomplete="off">
 
-    <select name="torneo">
+    <!-- Rival -->
+    <input type="text" name="rival" class="form-control" 
+           placeholder="Buscar por rival" value="{{ request('rival') }}">
+
+    <!-- Fecha inicio -->
+    <input type="date" name="fecha_inicio" class="form-control" 
+           value="{{ request('fecha_inicio') }}">
+
+    <!-- Fecha fin -->
+    <input type="date" name="fecha_fin" class="form-control" 
+           value="{{ request('fecha_fin') }}">
+
+    <!-- Torneo -->
+    <select name="torneo" class="form-select">
         <option value="">Todos los torneos</option>
         @foreach($torneos as $torneo)
             <option value="{{ $torneo->id_torneo }}" {{ request('torneo') == $torneo->id_torneo ? 'selected' : '' }}>
@@ -40,7 +51,8 @@
         @endforeach
     </select>
 
-    <select name="equipo">
+    <!-- Equipo -->
+    <select name="equipo" class="form-select">
         <option value="">Todos los equipos</option>
         @foreach($equipos as $equipo)
             <option value="{{ $equipo->id_equipo }}" {{ request('equipo') == $equipo->id_equipo ? 'selected' : '' }}>
@@ -49,10 +61,18 @@
         @endforeach
     </select>
 
-    <button type="submit">Filtrar</button>
-    <a href="{{ route('partido.index') }}" class="btn-reset" title="Limpiar filtros">
-        <i class="fas fa-sync-alt"></i>
-    </a>
+    <!-- Botón Filtrar -->
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
+
+    <!-- Botón Limpiar -->
+    <button>
+        <a href="{{ route('partido.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise"></i>
+        </a>
+    </button>
+
 </form>
 
 

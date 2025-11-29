@@ -179,56 +179,63 @@
         </div>
     </div>
 </section>
-
 <!-- Plans Section -->
 <section id="plans" class="py-5">
     <div class="container">
         <h2 class="text-center mb-5">Planes para tu Club</h2>
         <div class="row g-4">
+
+            <!-- Plan Jugador -->
             <div class="col-md-4">
                 <div class="plan-card text-center">
-                    <h3>Plan Básico</h3>
-                    <p class="text-muted mb-4">Ideal para clubes pequeños o emergentes</p>
+                    <h3>Plan Jugador</h3>
+                    <p class="text-muted mb-4">Ideal para deportistas individuales</p>
                     <ul class="list-unstyled mb-4">
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Gestión de hasta 20 jugadores</li>
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Estadísticas básicas</li>
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Comunicación por email</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Acceso a estadísticas personales</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Seguimiento de rendimiento</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Notificaciones del entrenador</li>
                     </ul>
-                    <div class="h4">$10 / mes</div>
-                    <button class="btn btn-outline-primary mt-3">Suscribirse</button>
+                    <div class="h4"></div>
+                    <button class="btn btn-outline-primary mt-3">Acceder</button>
                 </div>
             </div>
+
+            <!-- Plan Entrenador -->
             <div class="col-md-4">
                 <div class="plan-card text-center border-primary">
-                    <h3 class="text-primary">Plan Profesional</h3>
-                    <p class="text-muted mb-4">Para clubes medianos con más necesidades</p>
+                    <h3 class="text-primary">Plan Entrenador</h3>
+                    <p class="text-muted mb-4">Gestión completa para entrenadores</p>
                     <ul class="list-unstyled mb-4">
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Gestión ilimitada de jugadores y staff</li>
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Estadísticas avanzadas</li>
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Comunicación vía app y SMS</li>
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Reportes personalizados</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Gestión de jugadores y equipos</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Estadísticas avanzadas del equipo</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Comunicación vía app y correo</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Creación de entrenamientos</li>
                     </ul>
-                    <div class="h4">$30 / mes</div>
-                    <button class="btn btn-primary mt-3">Suscribirse</button>
+                    <div class="h4"></div>
+                    <button class="btn btn-primary mt-3">Acceder</button>
                 </div>
             </div>
+
+            <!-- Plan Administrador -->
             <div class="col-md-4">
                 <div class="plan-card text-center">
-                    <h3>Plan Elite</h3>
-                    <p class="text-muted mb-4">Solución completa para clubes profesionales</p>
+                    <h3>Plan Administrador del Sistema</h3>
+                    <p class="text-muted mb-4">Control total para clubes y academias</p>
                     <ul class="list-unstyled mb-4">
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Todo del plan Profesional</li>
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Integración con sistemas externos</li>
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Soporte dedicado 24/7</li>
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Consultoría personalizada</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Todo del plan Entrenador</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Administración de usuarios y roles</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Reportes personalizados avanzados</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i>Soporte prioritario y seguridad avanzada</li>
                     </ul>
-                    <div class="h4">$70 / mes</div>
+                    <div class="h4"></div>
                     <button class="btn btn-outline-primary mt-3">Solicitar Demo</button>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
+
 
 <!-- Testimonials Section -->
 <section id="testimonials" class="py-5 bg-light">

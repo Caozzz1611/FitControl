@@ -6,6 +6,8 @@
 <!-- Incluyendo Notyf -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -24,28 +26,46 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="card">
     <h2 class="h2L">Listado de Torneos</h2>
 
-    <form action="{{ route('torneo.index') }}" method="GET" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
-        <input type="text" name="search" placeholder="Buscar por nombre" value="{{ request('search') }}">
-        <input type="date" name="fecha_inicio" value="{{ request('fecha_inicio') }}">
-        <input type="date" name="fecha_fin" value="{{ request('fecha_fin') }}">
+   <form action="{{ route('torneo.index') }}" method="GET" class="input-group mb-3 shadow-sm" autocomplete="off">
 
-        {{-- Filtro por equipo solo para admin --}}
-        @if(Auth::user()->rol == 'admin')
-            <select name="equipo">
-                <option value="">Todos los organizadores</option>
-                @foreach($equipos as $equipo)
-                    <option value="{{ $equipo->id_equipo }}" {{ request('equipo') == $equipo->id_equipo ? 'selected' : '' }}>
-                        {{ $equipo->nombre_equipo }}
-                    </option>
-                @endforeach
-            </select>
-        @endif
+    <!-- Buscar por nombre -->
+    <input type="text" name="search" class="form-control" 
+           placeholder="Buscar por nombre" value="{{ request('search') }}">
 
-        <button type="submit">Filtrar</button>
-        <a href="{{ route('torneo.index') }}" class="btn-reset" title="Limpiar filtros">
-            <i class="fas fa-sync-alt"></i>
+    <!-- Fecha inicio -->
+    <input type="date" name="fecha_inicio" class="form-control" 
+           value="{{ request('fecha_inicio') }}">
+
+    <!-- Fecha fin -->
+    <input type="date" name="fecha_fin" class="form-control" 
+           value="{{ request('fecha_fin') }}">
+
+    {{-- Filtro por equipo solo para admin --}}
+    @if(Auth::user()->rol == 'admin')
+        <select name="equipo" class="form-select">
+            <option value="">Todos los organizadores</option>
+            @foreach($equipos as $equipo)
+                <option value="{{ $equipo->id_equipo }}" {{ request('equipo') == $equipo->id_equipo ? 'selected' : '' }}>
+                    {{ $equipo->nombre_equipo }}
+                </option>
+            @endforeach
+        </select>
+    @endif
+
+    <!-- Botón Filtrar -->
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
+
+    <!-- Botón Limpiar -->
+    <button>
+        <a href="{{ route('torneo.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise"></i>
         </a>
-    </form>
+    </button>
+
+</form>
+
 
     {{-- Botón para insertar solo para admin --}}
     @if(Auth::user()->rol == 'admin')
