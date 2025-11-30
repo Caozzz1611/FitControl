@@ -63,57 +63,87 @@
 
 </form>
 
-    {{-- Botón para insertar --}}
+ 
+  {{-- Botón para insertar (solo admin) --}}
+@if(Auth::user()->rol === 'admin')
     <div style="height: 50px; margin-bottom: 15px;">
-       <a href="{{ route('estadistica_partido.create') }}" id="insert-btn" class="btn-insertar">
-           + Insertar Estadística
-       </a>
+        <a href="{{ route('estadistica_partido.create') }}" id="insert-btn" class="btn-insertar">
+            + Insertar Estadística
+        </a>
     </div>
 
     <x-alert-insert :buttonId="'insert-btn'" />
+@endif
 
-    <table class="tabla-usuarios">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Partido</th>
-                <th>Usuario</th>
-                <th>Goles</th>
-                <th>Asistencias</th>
-                <th>Tarjetas Amarillas</th>
-                <th>Tarjetas Rojas</th>
+<table class="tabla-usuarios">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Partido</th>
+            <th>Usuario</th>
+            <th>Goles</th>
+            <th>Asistencias</th>
+            <th>Tarjetas Amarillas</th>
+            <th>Tarjetas Rojas</th>
+
+            {{-- Columna Acciones solo para admin o entrenador --}}
+            @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
                 <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($estadisticas as $estadistica)
-                <tr>
-                    <td>{{ $estadistica->id_estadistica }}</td>
-                    <td>{{ $estadistica->partido->rival }}</td>
-                    <td>{{ $estadistica->usuario->nombre }}</td>
-                    <td>{{ $estadistica->goles }}</td>
-                    <td>{{ $estadistica->asistencias }}</td>
-                    <td>{{ $estadistica->tarjetas_amarillas }}</td>
-                    <td>{{ $estadistica->tarjetas_rojas }}</td>
-                    <td>
-                        <a href="{{ route('estadistica_partido.edit', $estadistica) }}" id="edit-btn-{{ $estadistica->id_estadistica }}" class="btn-editar">Editar</a>
+            @endif
+        </tr>
+    </thead>
 
+    <tbody>
+        @forelse($estadisticas as $estadistica)
+            <tr>
+                <td>{{ $estadistica->id_estadistica }}</td>
+                <td>{{ $estadistica->partido->rival }}</td>
+                <td>{{ $estadistica->usuario->nombre }}</td>
+                <td>{{ $estadistica->goles }}</td>
+                <td>{{ $estadistica->asistencias }}</td>
+                <td>{{ $estadistica->tarjetas_amarillas }}</td>
+                <td>{{ $estadistica->tarjetas_rojas }}</td>
+
+                {{-- Acciones según el rol --}}
+                @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
+                    <td>
+                        {{-- Editar: admin y entrenador --}}
+                        <a href="{{ route('estadistica_partido.edit', $estadistica) }}" 
+                           id="edit-btn-{{ $estadistica->id_estadistica }}" 
+                           class="btn-editar">
+                            Editar
+                        </a>
                         <x-alert-edit :buttonId="'edit-btn-'.$estadistica->id_estadistica" />
 
-                        <form id="delete-form-{{ $estadistica->id_estadistica }}" action="{{ route('estadistica_partido.destroy', $estadistica) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn-eliminar">Eliminar</button>
-                        </form>
+                        {{-- Eliminar: solo admin --}}
+                        @if(Auth::user()->rol === 'admin')
+                            <form id="delete-form-{{ $estadistica->id_estadistica }}" 
+                                  action="{{ route('estadistica_partido.destroy', $estadistica) }}" 
+                                  method="POST" 
+                                  style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-eliminar">Eliminar</button>
+                            </form>
+                            <x-alert-delete :formId="'delete-form-'.$estadistica->id_estadistica" />
+                        @endif
 
-                        <x-alert-delete :formId="'delete-form-'.$estadistica->id_estadistica" />
                     </td>
-                </tr>
-            @empty
-                <tr><td colspan="8">No hay estadísticas registradas.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+                @endif
+
+            </tr>
+        @empty
+            <tr>
+                @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
+                    <td colspan="8">No hay estadísticas registradas.</td>
+                @else
+                    <td colspan="7">No hay estadísticas registradas.</td>
+                @endif
+            </tr>
+        @endforelse
+    </tbody>
+</table>
+
 </div>
 
 @endsection

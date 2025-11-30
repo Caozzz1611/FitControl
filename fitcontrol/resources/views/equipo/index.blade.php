@@ -63,7 +63,8 @@
 </form>
 
 
-    {{-- Botón para insertar --}}
+    {{-- Botón para insertar (solo ADMIN) --}}
+@if(Auth::user()->rol === 'admin')
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('equipo.create') }}" id="insert-btn" class="btn-insertar">
             + Nuevo Equipo
@@ -71,51 +72,66 @@
 
         <x-alert-insert :buttonId="'insert-btn'" />
     </div>
+@endif
       
-    <table class="tabla-usuarios">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Logo</th>
-                <th>Ubicación</th>
-                <th>Contacto</th>
-                <th>Categoría</th>
+<table class="tabla-usuarios">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Logo</th>
+            <th>Ubicación</th>
+            <th>Contacto</th>
+            <th>Categoría</th>
+            @if(Auth::user()->rol === 'admin')
                 <th>Acciones</th>
+            @endif
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($equipos as $equipo)
+            <tr>
+                <td>{{ $equipo->id_equipo }}</td>
+                <td>{{ $equipo->nombre_equipo }}</td>
+                <td>{{ $equipo->logo_equipo }}</td>
+                <td>{{ $equipo->ubi_equipo }}</td>
+                <td>{{ $equipo->contacto_equipo }}</td>
+                <td>{{ $equipo->categoria_equipo }}</td>
+
+                @if(Auth::user()->rol === 'admin')
+                <td>
+                    {{-- Botón Editar con alerta (solo ADMIN) --}}
+                    <a href="{{ route('equipo.edit', $equipo) }}" 
+                       id="edit-btn-{{ $equipo->id_equipo }}" 
+                       class="btn-editar">
+                        Editar
+                    </a>
+                    <x-alert-edit :buttonId="'edit-btn-'.$equipo->id_equipo" />
+
+                    {{-- Formulario de eliminar con alerta (solo ADMIN) --}}
+                    <form id="delete-form-{{ $equipo->id_equipo }}" 
+                          action="{{ route('equipo.destroy', $equipo) }}" 
+                          method="POST" 
+                          style="display:inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-eliminar">
+                            Eliminar
+                        </button>
+                    </form>
+                    <x-alert-delete :formId="'delete-form-'.$equipo->id_equipo" />
+                </td>
+                @endif
             </tr>
-        </thead>
-        <tbody>
-            @forelse($equipos as $equipo)
-                <tr>
-                    <td>{{ $equipo->id_equipo }}</td>
-                    <td>{{ $equipo->nombre_equipo }}</td>
-                    <td>{{ $equipo->logo_equipo }}</td>
-                    <td>{{ $equipo->ubi_equipo }}</td>
-                    <td>{{ $equipo->contacto_equipo }}</td>
-                    <td>{{ $equipo->categoria_equipo }}</td>
-                   <td>
-    {{-- Botón Editar con alerta --}}
-    <a href="{{ route('equipo.edit', $equipo) }}" id="edit-btn-{{ $equipo->id_equipo }}" class="btn-editar">
-        Editar
-    </a>
-    <x-alert-edit :buttonId="'edit-btn-'.$equipo->id_equipo" />
+        @empty
+            <tr>
+                <td colspan="{{ Auth::user()->rol === 'admin' ? 7 : 6 }}">
+                    No hay equipos registrados.
+                </td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
 
-    {{-- Formulario de eliminar con alerta --}}
-    <form id="delete-form-{{ $equipo->id_equipo }}" action="{{ route('equipo.destroy', $equipo) }}" method="POST" style="display:inline">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn-eliminar">
-            Eliminar
-        </button>
-    </form>
-    <x-alert-delete :formId="'delete-form-'.$equipo->id_equipo" />
-</td>
-
-                </tr>
-            @empty
-                <tr><td colspan="7">No hay equipos registrados.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
-    </div>
+</div>
 @endsection

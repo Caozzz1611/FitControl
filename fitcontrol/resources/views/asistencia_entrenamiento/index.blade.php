@@ -103,46 +103,82 @@
 </form>
 
 
+   {{-- Botón para insertar (admin y entrenador) --}}
+@if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
     <div style="height: 50px; margin-bottom: 15px;">
-        <a href="{{ route('asistencia_entrenamiento.create') }}" id="insert-btn" class="btn-insertar">+ Insertar Asistencia</a>
+        <a href="{{ route('asistencia_entrenamiento.create') }}" id="insert-btn" class="btn-insertar">
+            + Insertar Asistencia
+        </a>
     </div>
 
     <x-alert-insert :buttonId="'insert-btn'" />
+@endif
 
-    <table class="tabla-usuarios">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Entrenamiento</th>
-                <th>Jugador</th>
-                <th>Asistió</th>
+
+<table class="tabla-usuarios">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Entrenamiento</th>
+            <th>Jugador</th>
+            <th>Asistió</th>
+
+            {{-- Acciones visibles solo para admin y entrenador --}}
+            @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
                 <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($asistencias as $asistencia)
-                <tr>
-                    <td>{{ $asistencia->id_asistencia }}</td>
-                    <td>{{ $asistencia->entrenamiento?->fecha ?? '-' }} - {{ $asistencia->entrenamiento?->hora ?? '-' }}</td>
-                    <td>{{ $asistencia->jugador?->nombre ?? '-' }}</td>
-                    <td>{{ $asistencia->asistio ? 'Sí' : 'No' }}</td>
-                    <td>
-                        <a href="{{ route('asistencia_entrenamiento.edit', $asistencia) }}" id="edit-btn-{{ $asistencia->id_asistencia_entrenamiento }}" class="btn-editar">Editar</a>
+            @endif
+        </tr>
+    </thead>
 
-                        <form id="delete-form-{{ $asistencia->id_asistencia_entrenamiento }}" action="{{ route('asistencia_entrenamiento.destroy', $asistencia) }}" method="POST" style="display:inline;">
+    <tbody>
+        @forelse($asistencias as $asistencia)
+            <tr>
+                <td>{{ $asistencia->id_asistencia }}</td>
+                <td>{{ $asistencia->entrenamiento?->fecha ?? '-' }} - {{ $asistencia->entrenamiento?->hora ?? '-' }}</td>
+                <td>{{ $asistencia->jugador?->nombre ?? '-' }}</td>
+                <td>{{ $asistencia->asistio ? 'Sí' : 'No' }}</td>
+
+                {{-- Acciones: admin y entrenador --}}
+                @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
+                    <td>
+                        {{-- Editar --}}
+                        <a href="{{ route('asistencia_entrenamiento.edit', $asistencia) }}"
+                           id="edit-btn-{{ $asistencia->id_asistencia }}"
+                           class="btn-editar">
+                            Editar
+                        </a>
+
+                        {{-- Alerta de editar --}}
+                        <x-alert-edit :buttonId="'edit-btn-'.$asistencia->id_asistencia" />
+
+                        {{-- Eliminar --}}
+                        <form id="delete-form-{{ $asistencia->id_asistencia }}"
+                              action="{{ route('asistencia_entrenamiento.destroy', $asistencia) }}"
+                              method="POST"
+                              style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="button" class="btn-eliminar" data-id="{{ $asistencia->id_asistencia_entrenamiento }}">Eliminar</button>
+                            <button type="submit" class="btn-eliminar">Eliminar</button>
                         </form>
 
-                        <x-alert-delete :formId="'delete-form-'.$asistencia->id_asistencia_entrenamiento" />
+                        {{-- Alerta eliminar --}}
+                        <x-alert-delete :formId="'delete-form-'.$asistencia->id_asistencia" />
                     </td>
-                </tr>
-            @empty
-                <tr><td colspan="5">No hay asistencias registradas.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+                @endif
+
+            </tr>
+        @empty
+            <tr>
+                @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
+                    <td colspan="5">No hay asistencias registradas.</td>
+                @else
+                    <td colspan="4">No hay asistencias registradas.</td>
+                @endif
+            </tr>
+        @endforelse
+    </tbody>
+</table>
+
 </div>
 
 @endsection

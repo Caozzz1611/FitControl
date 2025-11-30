@@ -40,51 +40,85 @@
 
 </form>
 
-    <div style="height: 50px; margin-bottom: 15px;">
-        <a href="{{ route('rendimiento.create') }}" id="insert-btn" class="btn-insertar">+ Insertar Rendimiento</a>
-        <x-alert-insert :buttonId="'insert-btn'" />
-        <br>
-    </div>
+{{-- Botón para insertar (ADMIN y ENTRENADOR) --}}
+@if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
+<div style="height: 50px; margin-bottom: 15px;">
+    <a href="{{ route('rendimiento.create') }}" id="insert-btn" class="btn-insertar">
+        + Insertar Rendimiento
+    </a>
 
-    <table class="tabla-usuarios">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Evaluación</th>
-                <th>Comentarios</th>
-                <th>Usuario</th>
-                <th>Entrenamiento</th>
+    <x-alert-insert :buttonId="'insert-btn'" />
+    <br>
+</div>
+@endif
+
+
+<table class="tabla-usuarios">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Evaluación</th>
+            <th>Comentarios</th>
+            <th>Usuario</th>
+            <th>Entrenamiento</th>
+
+            {{-- Acciones solo admin o entrenador --}}
+            @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
                 <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($rendimientos as $rendimiento)
-                <tr>
-                    <td>{{ $rendimiento->id_rendimiento }}</td>
-                    <td>{{ $rendimiento->evaluacion }}</td>
-                    <td>{{ $rendimiento->comentarios }}</td>
-                    <td>{{ $rendimiento->usuario->nombre ?? 'N/A' }}</td>
-                    <td>{{ $rendimiento->entrenamiento->fecha ?? 'N/A' }}</td>
-                    <td>
-                        <a href="{{ route('rendimiento.edit', $rendimiento) }}" id="edit-btn-{{ $rendimiento->id_rendimiento }}" class="btn-editar">Editar</a>
-                        <x-alert-edit :buttonId="'edit-btn-'.$rendimiento->id_rendimiento" />
+            @endif
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($rendimientos as $rendimiento)
+            <tr>
+                <td>{{ $rendimiento->id_rendimiento }}</td>
+                <td>{{ $rendimiento->evaluacion }}</td>
+                <td>{{ $rendimiento->comentarios }}</td>
+                <td>{{ $rendimiento->usuario->nombre ?? 'N/A' }}</td>
+                <td>{{ $rendimiento->entrenamiento->fecha ?? 'N/A' }}</td>
 
-                        <form id="delete-form-{{ $rendimiento->id_rendimiento }}" 
-                              action="{{ route('rendimiento.destroy', $rendimiento) }}" 
-                              method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn-eliminar">Eliminar</button>
-                        </form>
-                        <x-alert-delete :formId="'delete-form-'.$rendimiento->id_rendimiento" />
-                    </td>
-                </tr>
-            @empty
-                <tr><td colspan="6">No hay rendimientos registrados.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+                {{-- Acciones ADMIN y ENTRENADOR --}}
+                @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
+                <td>
+                    {{-- Botón Editar --}}
+                    <a href="{{ route('rendimiento.edit', $rendimiento) }}"
+                       id="edit-btn-{{ $rendimiento->id_rendimiento }}"
+                       class="btn-editar">
+                        Editar
+                    </a>
+                    <x-alert-edit :buttonId="'edit-btn-'.$rendimiento->id_rendimiento" />
+
+                    {{-- Eliminar SOLO admin --}}
+                    @if(Auth::user()->rol === 'admin')
+                    <form id="delete-form-{{ $rendimiento->id_rendimiento }}"
+                          action="{{ route('rendimiento.destroy', $rendimiento) }}"
+                          method="POST"
+                          style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+
+                        <button type="submit" class="btn-eliminar">
+                            Eliminar
+                        </button>
+                    </form>
+
+                    <x-alert-delete :formId="'delete-form-'.$rendimiento->id_rendimiento" />
+                    @endif
+
+                </td>
+                @endif
+            </tr>
+        @empty
+            <tr>
+                <td colspan="{{ (Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador') ? 6 : 5 }}">
+                    No hay rendimientos registrados.
+                </td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
 
 </div>
 
 @endsection
+

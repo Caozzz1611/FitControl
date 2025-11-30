@@ -63,8 +63,8 @@
     </button>
 
 </form>
-
-    {{-- Botón para insertar --}}
+{{-- Botón para insertar (solo admin) --}}
+@if(Auth::user()->rol === 'admin')
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('historial.create') }}" id="insert-btn" class="btn-insertar">
             + Nuevo Historial
@@ -72,19 +72,25 @@
 
         <x-alert-insert :buttonId="'insert-btn'" />
     </div>
+@endif
 
-    <table class="tabla-usuarios">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Observaciones</th>
-                <th>Fecha</th>
-                <th>Usuario</th>
+<table class="tabla-usuarios">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Observaciones</th>
+            <th>Fecha</th>
+            <th>Usuario</th>
+
+            {{-- Acciones solo para admin y entrenador --}}
+            @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
                 <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($historiales as $historial)
+            @endif
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach($historiales as $historial)
             <tr>
                 <td>{{ $historial->id_historial }}</td>
                 <td>{{ $historial->observaciones }}</td>
@@ -92,27 +98,44 @@
                 <td>
                     {{ $historial->usuario ? $historial->usuario->nombre . ' ' . $historial->usuario->apellido : '-' }}
                 </td>
-                <td>
-                    <a href="{{ route('historial.edit', $historial) }}" id="edit-btn-{{ $historial->id_historial }}" class="btn-editar">
-                        Editar
-                    </a>
-                    <x-alert-edit :buttonId="'edit-btn-'.$historial->id_historial" />
 
-                    {{-- Formulario de eliminar --}}
-                    <form id="delete-form-{{ $historial->id_historial }}" action="{{ route('historial.destroy', $historial) }}" method="POST" style="display:inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-eliminar">
-                            Eliminar
-                        </button>
-                    </form>
+                {{-- Acciones --}}
+                @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
+                    <td>
 
-                    <x-alert-delete :formId="'delete-form-'.$historial->id_historial" />
-                </td>
+                        {{-- Editar (admin y entrenador) --}}
+                        <a href="{{ route('historial.edit', $historial) }}"
+                           id="edit-btn-{{ $historial->id_historial }}"
+                           class="btn-editar">
+                            Editar
+                        </a>
+
+                        <x-alert-edit :buttonId="'edit-btn-'.$historial->id_historial" />
+
+                        {{-- Eliminar (solo admin) --}}
+                        @if(Auth::user()->rol === 'admin')
+                            <form id="delete-form-{{ $historial->id_historial }}"
+                                  action="{{ route('historial.destroy', $historial) }}"
+                                  method="POST"
+                                  style="display:inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-eliminar">
+                                    Eliminar
+                                </button>
+                            </form>
+
+                            <x-alert-delete :formId="'delete-form-'.$historial->id_historial" />
+                        @endif
+
+                    </td>
+                @endif
+
             </tr>
-            @endforeach
-        </tbody>
-    </table>
+        @endforeach
+    </tbody>
+</table>
+
 </div>
 
 @endsection

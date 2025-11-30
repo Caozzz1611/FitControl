@@ -67,7 +67,8 @@
 
 </form>
 
-    {{-- Botón para insertar --}}
+   {{-- Botón para insertar (solo admin) --}}
+@if(Auth::user()->rol === 'admin')
     <div style="height: 50px; margin-bottom: 15px;">
         <a href="{{ route('notificaciones.create') }}" id="insert-btn" class="btn-insertar">
             + Crear Notificación
@@ -75,46 +76,63 @@
 
         <x-alert-insert :buttonId="'insert-btn'" />
     </div>
+@endif
 
-    <table class="tabla-usuarios">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Mensaje</th>
-                <th>Fecha</th>
-                <th>Usuario Destinatario</th>
+<table class="tabla-usuarios">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Mensaje</th>
+            <th>Fecha</th>
+            <th>Usuario Destinatario</th>
+
+            {{-- Acciones solo para admin --}}
+            @if(Auth::user()->rol === 'admin')
                 <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($notificaciones as $notificacion)
-            <tr>
-                <td>{{ $notificacion->id_notificacion }}</td>
-                <td>{{ $notificacion->titulo }}</td>
-                <td>{{ $notificacion->mensaje }}</td>
-                <td>{{ $notificacion->fecha }}</td>
-                <td>{{ $notificacion->usuarioDestinatario->nombre ?? '-' }}</td>
+            @endif
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach($notificaciones as $notificacion)
+        <tr>
+            <td>{{ $notificacion->id_notificacion }}</td>
+            <td>{{ $notificacion->titulo }}</td>
+            <td>{{ $notificacion->mensaje }}</td>
+            <td>{{ $notificacion->fecha }}</td>
+            <td>{{ $notificacion->usuarioDestinatario->nombre ?? '-' }}</td>
+
+            {{-- Acciones solo admin --}}
+            @if(Auth::user()->rol === 'admin')
                 <td>
-                    {{-- Botón Editar --}}
-                    <a href="{{ route('notificaciones.edit', ['notificacion' => $notificacion->id_notificacion]) }}" 
-                        id="edit-btn-{{ $notificacion->id_notificacion }}" class="btn-editar">
+                    {{-- Editar --}}
+                    <a href="{{ route('notificaciones.edit', ['notificacion' => $notificacion->id_notificacion]) }}"
+                        id="edit-btn-{{ $notificacion->id_notificacion }}" 
+                        class="btn-editar">
                         Editar
                     </a>
+
                     <x-alert-edit :buttonId="'edit-btn-'.$notificacion->id_notificacion" />
 
-                    {{-- Formulario Eliminar --}}
-                    <form id="delete-form-{{ $notificacion->id_notificacion }}" action="{{ route('notificaciones.destroy', $notificacion) }}" method="POST" style="display:inline">
+                    {{-- Eliminar --}}
+                    <form id="delete-form-{{ $notificacion->id_notificacion }}" 
+                          action="{{ route('notificaciones.destroy', $notificacion) }}" 
+                          method="POST" 
+                          style="display:inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-eliminar">Eliminar</button>
                     </form>
+
                     <x-alert-delete :formId="'delete-form-'.$notificacion->id_notificacion" />
                 </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+            @endif
+
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
 </div>
 

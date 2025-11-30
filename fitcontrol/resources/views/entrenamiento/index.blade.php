@@ -84,64 +84,98 @@
            class="form-control form-control-sm"
            style="width: 160px ">
 
-    <!-- Botón Filtrar -->
-    <button type="submit" 
-            class="btn btn-primary btn-sm">
-        Filtrar
+     <!-- Botón Buscar -->
+    <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
     </button>
 
     <!-- Botón Limpiar -->
-    <a href="{{ route('entrenamiento.index') }}" 
-       class="btn btn-secondary btn-sm">
-        Limpiar
-    </a>
+    <button>
+        <a href="{{ route('equipo.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise"></i>
+        </a>
+    </button>
 </form>
 
+{{-- Botón para insertar (ADMIN y ENTRENADOR) --}}
+@if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
+<div style="height: 50px; margin-bottom: 15px;">
+    <a href="{{ route('entrenamiento.create') }}" id="insert-btn" class="btn-insertar">
+        + Insertar Entrenamiento
+    </a>
+</div>
 
-    <div style="height: 50px; margin-bottom: 15px;">
-        <a href="{{ route('entrenamiento.create') }}" id="insert-btn" class="btn-insertar">+ Insertar Entrenamiento</a>
-    </div>
+<x-alert-insert :buttonId="'insert-btn'" />
+@endif
 
-    <x-alert-insert :buttonId="'insert-btn'" />
+<table class="tabla-usuarios">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Ubicación</th>
+            <th>Equipo</th>
 
-    <table class="tabla-usuarios">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Ubicación</th>
-                <th>Equipo</th>
+            {{-- Acciones solo si el rol es admin o entrenador --}}
+            @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
                 <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($entrenamientos as $entrenamiento)
-                <tr>
-                    <td>{{ $entrenamiento->id_entrenamiento }}</td>
-                    <td>{{ $entrenamiento->fecha }}</td>
-                    <td>{{ $entrenamiento->hora }}</td>
-                    <td>{{ $entrenamiento->ubicacion }}</td>
-                    <td>{{ $entrenamiento->equipo?->nombre_equipo ?? '-' }}</td>
-                    <td>
-                        <a href="{{ route('entrenamiento.edit', $entrenamiento) }}" id="edit-btn-{{ $entrenamiento->id_entrenamiento }}" class="btn-editar">Editar</a>
+            @endif
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($entrenamientos as $entrenamiento)
+            <tr>
+                <td>{{ $entrenamiento->id_entrenamiento }}</td>
+                <td>{{ $entrenamiento->fecha }}</td>
+                <td>{{ $entrenamiento->hora }}</td>
+                <td>{{ $entrenamiento->ubicacion }}</td>
+                <td>{{ $entrenamiento->equipo?->nombre_equipo ?? '-' }}</td>
 
-                        <x-alert-edit :buttonId="'edit-btn-'.$entrenamiento->id_entrenamiento" />
+                {{-- Acciones solo para admin o entrenador --}}
+                @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador')
+                <td>
+                    {{-- Botón Editar (ADMIN y ENTRENADOR) --}}
+                    <a href="{{ route('entrenamiento.edit', $entrenamiento) }}"
+                       id="edit-btn-{{ $entrenamiento->id_entrenamiento }}"
+                       class="btn-editar">
+                        Editar
+                    </a>
 
-                        <form id="delete-form-{{ $entrenamiento->id_entrenamiento }}" action="{{ route('entrenamiento.destroy', $entrenamiento) }}" method="POST" style="display:inline;">
+                    <x-alert-edit :buttonId="'edit-btn-'.$entrenamiento->id_entrenamiento" />
+
+                    {{-- Eliminar SOLO admin --}}
+                    @if(Auth::user()->rol === 'admin')
+                        <form id="delete-form-{{ $entrenamiento->id_entrenamiento }}"
+                              action="{{ route('entrenamiento.destroy', $entrenamiento) }}"
+                              method="POST"
+                              style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="button" class="btn-eliminar" onclick="confirmDelete({{ $entrenamiento->id_entrenamiento }})">Eliminar</button>
+
+                            <button type="button"
+                                    class="btn-eliminar"
+                                    onclick="confirmDelete({{ $entrenamiento->id_entrenamiento }})">
+                                Eliminar
+                            </button>
                         </form>
 
                         <x-alert-delete :formId="'delete-form-'.$entrenamiento->id_entrenamiento" />
-                    </td>
-                </tr>
-            @empty
-                <tr><td colspan="6">No hay entrenamientos registrados.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+                    @endif
+
+                </td>
+                @endif
+
+            </tr>
+        @empty
+            <tr>
+                <td colspan="{{ (Auth::user()->rol === 'admin' || Auth::user()->rol === 'entrenador') ? 6 : 5 }}">
+                    No hay entrenamientos registrados.
+                </td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
 </div>
 
 @endsection

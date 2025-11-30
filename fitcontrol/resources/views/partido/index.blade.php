@@ -75,57 +75,78 @@
 
 </form>
 
-
-    {{-- Botón para insertar --}}
+{{-- Botón para insertar (solo admin) --}}
+@if(Auth::user()->rol === 'admin')
     <div style="height: 50px; margin-bottom: 15px;">
-       <a href="{{ route('partido.create') }}" id="insert-btn" class="btn-insertar">
-           + Insertar Partido
-       </a>
+        <a href="{{ route('partido.create') }}" id="insert-btn" class="btn-insertar">
+            + Insertar Partido
+        </a>
 
-       <x-alert-insert :buttonId="'insert-btn'" />
+        <x-alert-insert :buttonId="'insert-btn'" />
     </div>
+@endif
 
-    <table class="tabla-usuarios">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Rival</th>
-                <th>Resultado</th>
-                <th>Torneo</th>
-                <th>Equipo</th>
+<table class="tabla-usuarios">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Rival</th>
+            <th>Resultado</th>
+            <th>Torneo</th>
+            <th>Equipo</th>
+
+            @if(Auth::user()->rol === 'admin')
                 <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($partidos as $partido)
-                <tr>
-                    <td>{{ $partido->id_partido }}</td>
-                    <td>{{ $partido->fecha }}</td>
-                    <td>{{ $partido->hora }}</td>
-                    <td>{{ $partido->rival }}</td>
-                    <td>{{ $partido->resultado }}</td>
-                    <td>{{ $partido->torneo->nombre ?? '' }}</td>
-                    <td>{{ $partido->equipo->nombre_equipo ?? '' }}</td>
+            @endif
+        </tr>
+    </thead>
+
+    <tbody>
+        @forelse($partidos as $partido)
+            <tr>
+                <td>{{ $partido->id_partido }}</td>
+                <td>{{ $partido->fecha }}</td>
+                <td>{{ $partido->hora }}</td>
+                <td>{{ $partido->rival }}</td>
+                <td>{{ $partido->resultado }}</td>
+                <td>{{ $partido->torneo->nombre ?? '' }}</td>
+                <td>{{ $partido->equipo->nombre_equipo ?? '' }}</td>
+
+                {{-- Acciones solo para ADMIN --}}
+                @if(Auth::user()->rol === 'admin')
                     <td>
-                        <a href="{{ route('partido.edit', $partido) }}" id="edit-btn-{{ $partido->id_partido }}" class="btn-editar">
+                        <a href="{{ route('partido.edit', $partido) }}" 
+                           id="edit-btn-{{ $partido->id_partido }}" 
+                           class="btn-editar">
                             Editar
                         </a>
                         <x-alert-edit :buttonId="'edit-btn-'.$partido->id_partido" />
 
-                        <form id="delete-form-{{ $partido->id_partido }}" action="{{ route('partido.destroy', $partido) }}" method="POST" style="display:inline;">
+                        <form id="delete-form-{{ $partido->id_partido }}" 
+                              action="{{ route('partido.destroy', $partido) }}" 
+                              method="POST" 
+                              style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn-eliminar">Eliminar</button>
                         </form>
                         <x-alert-delete :formId="'delete-form-'.$partido->id_partido" />
                     </td>
-                </tr>
-            @empty
-                <tr><td colspan="8">No hay partidos registrados.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+                @endif
+            </tr>
+        @empty
+            <tr>
+                @if(Auth::user()->rol === 'admin')
+                    <td colspan="8">No hay partidos registrados.</td>
+                @else
+                    <td colspan="7">No hay partidos registrados.</td>
+                @endif
+            </tr>
+        @endforelse
+    </tbody>
+</table>
+
 </div>
 @endsection

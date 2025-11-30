@@ -75,6 +75,7 @@
         <a href="{{ route('rendimiento.index') }}" class="submenu-item"><i class="fa-solid fa-award"></i> Rendimiento</a>
         <a href="{{ route('partido.index') }}" class="submenu-item"><i class="fa-solid fa-futbol"></i> Partido</a>
         <a href="{{ route('estadistica_partido.index') }}" class="submenu-item"><i class="fa-solid fa-chart-line"></i> Estadísticas Partido</a>
+            <a href="{{ route('notificaciones.index') }}" class="submenu-item"><i class="fa-solid fa-bell"></i> Notificaciones</a>
         <a href="{{ route('asistencia_entrenamiento.index') }}" class="submenu-item"><i class="fa-solid fa-calendar-check"></i> Asistencia</a>
         <a href="{{ route('historial.index') }}" class="submenu-item"><i class="fa-solid fa-file-medical"></i> Historial Médico</a>
     </div>
