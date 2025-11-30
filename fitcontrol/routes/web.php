@@ -157,3 +157,16 @@ Route::get('/torneo/pdf', [PdfController::class, 'downloadTorneos'])->name('torn
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
+
+
+//rutas para excels
+
+Route::get('/partidos/export', [App\Http\Controllers\PartidoController::class, 'exportExcel'])
+     ->name('partidos.export');
+
+Route::get('/historial_medico/export', [HistorialMedicoController::class, 'export'])
+    ->name('historial_medico.export');
+
+Route::get('/entrenamientos/export', [EntrenamientoController::class, 'export'])->name('entrenamientos.export');
+
+Route::get('/asistencias/export', [AsistenciaEntrenamientoController::class, 'export'])->name('asistencias.export');

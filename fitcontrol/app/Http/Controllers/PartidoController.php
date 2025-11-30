@@ -8,6 +8,9 @@ use App\Models\EstadisticaPartido;
 use App\Models\Torneo;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use App\Exports\PartidosExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class PartidoController extends Controller
 {
@@ -88,6 +91,8 @@ public function index(Request $request)
         return redirect()->route('partido.index')->with('success', 'Partido actualizado correctamente');
     }
 
+ 
+
     public function destroy(Partido $partido)
     {
         try {
@@ -110,4 +115,11 @@ public function index(Request $request)
                 ->with('error', 'Error al intentar eliminar el partido: ' . $e->getMessage());
         }
     }
+
+    //excels 
+    public function exportExcel()
+{
+    // Esto es suficiente
+    return Excel::download(new PartidosExport, 'partidos.xlsx');
+}
 }

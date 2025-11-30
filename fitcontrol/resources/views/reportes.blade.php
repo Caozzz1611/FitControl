@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h2 class="mb-4 text-center">Reportes Disponibles</h2>
+    <h2 class="mb-4 text-center">PDF Disponibles</h2>
 
     <div class="reportes-container">
         {{-- Reporte de Usuarios --}}
@@ -26,7 +26,7 @@
         <div class="reporte-item">
             <div class="reporte-info">
                 <div class="reporte-nombre">
-                    <i class="fas fa-bell"></i> Reporte de Equipos
+                  <i class="fas fa-users-gear"></i> Reporte de Equipos
                 </div>
                 <div class="reporte-descripcion">
                     Muestra todos los equipos que posee el sistema.
@@ -56,7 +56,7 @@
         <div class="reporte-item">
             <div class="reporte-info">
                 <div class="reporte-nombre">
-                    <i class="fas fa-money-bill-wave"></i> Reporte de Torneos
+                   <i class="fas fa-trophy"></i> Reporte de Torneos
                 </div>
                 <div class="reporte-descripcion">
                     Resumen de todos los pagos realizados por los usuarios, con estado y montos correspondientes.
@@ -69,6 +69,81 @@
             </a>
         </div>
     </div>
+
+
+
+
+     {{-- Reportes en excel --}}
+
+        <h2 class="mb-4 text-center">Excel Disponibles</h2>
+
+        
+    <div class="reportes-container">
+        {{-- Reporte de historial_medico --}}
+        <div class="reporte-item">
+            <div class="reporte-info">
+                <div class="reporte-nombre">
+                    <i class="fas fa-file-alt"></i> Reporte de Historial Médico
+
+                </div>
+                <div class="reporte-descripcion">
+                    Listado completo de todos los usuarios registrados en el sistema, con su Historial Medico.
+                </div>
+            </div>
+            <a href="{{ route('historial_medico.export') }}" class="btn btn-excel">
+                <i class="fas fa-file-excel"></i> Exportar excel
+            </a>
+        </div>
+
+        {{-- Reporte de Notificaciones --}}
+        <div class="reporte-item">
+            <div class="reporte-info">
+                <div class="reporte-nombre">
+                   <i class="fas fa-futbol"></i> Reporte de Partidos
+                </div>
+                <div class="reporte-descripcion">
+                    Muestra todos los partidos que posee el sistema.
+                </div>
+            </div>
+            <a href="{{ route('partidos.export') }}" class="btn btn-excel">
+                <i class="fas fa-file-excel"></i> Exportar excel
+            </a>
+        </div>
+
+        {{-- Reporte de entrenamientos --}}
+        <div class="reporte-item">
+            <div class="reporte-info">
+                <div class="reporte-nombre">
+                   <i class="fas fa-dumbbell"></i> Reporte de Entrenamientos
+                </div>
+                <div class="reporte-descripcion">
+                    Resumen de todos los entrenamientos correspondientes.
+                </div>
+            </div>
+            <a href="{{ route('entrenamientos.export') }}" class="btn btn-excel">
+                <i class="fas fa-file-excel"></i> Exportar excel
+            </a>
+        </div>
+
+           {{-- Reporte de asistencias --}}
+        <div class="reporte-item">
+            <div class="reporte-info">
+                <div class="reporte-nombre">
+                    <i class="fas fa-user-check"></i> Reporte de Asistencias
+                </div>
+                <div class="reporte-descripcion">
+                    Resumen de todas las asistencias.
+                </div>
+            </div>
+            <a href="{{ route('asistencias.export') }}" class="btn btn-excel">
+                 <i class="fas fa-file-excel"></i> Exportar excel
+</a>
+
+            </a>
+        </div>
+    </div>
+
+
 </div>
 
 <style>
@@ -131,6 +206,19 @@
 .btn-pdf:hover {
     background-color: #c0392b;
     transform: scale(1.05);
+}
+
+
+
+
+.btn-excel {
+    background-color: #089f42;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
 }
 </style>
 @endsection

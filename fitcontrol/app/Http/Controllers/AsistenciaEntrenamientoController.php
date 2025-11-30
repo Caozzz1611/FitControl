@@ -6,6 +6,11 @@ use App\Models\AsistenciaEntrenamiento;
 use App\Models\Usuario;
 use App\Models\Entrenamiento;
 use Illuminate\Http\Request;
+use App\Exports\AsistenciaEntrenamientoExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
+
 
 class AsistenciaEntrenamientoController extends Controller
 {
@@ -89,4 +94,14 @@ public function index(Request $request)
         $asistencia_entrenamiento->delete();
         return redirect()->route('asistencia_entrenamiento.index')->with('success', 'Asistencia eliminada correctamente.');
     }
+
+    //excel
+
+    public function export()
+{
+    $user = auth()->user();
+    $userId = ($user->rol !== 'admin') ? $user->id_usu : null; // Si es entrenador, solo los suyos
+
+    return Excel::download(new AsistenciaEntrenamientoExport($userId), 'asistencias_entrenamiento.xlsx');
+}
 }

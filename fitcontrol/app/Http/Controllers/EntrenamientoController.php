@@ -6,6 +6,11 @@ use App\Models\Entrenamiento;
 use App\Models\Equipo;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use App\Exports\EntrenamientoExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
+
 
 
 class EntrenamientoController extends Controller
@@ -99,5 +104,15 @@ public function index(Request $request)
         // Para otros errores, puedes lanzar la excepción o manejarla diferente
         throw $e;
     }
+}
+
+//excel
+
+public function export()
+{
+    $user = auth()->user();
+    $userId = ($user->rol !== 'admin') ? $user->id_usu : null; // Si es entrenador, solo los suyos
+
+    return Excel::download(new EntrenamientoExport($userId), 'entrenamientos.xlsx');
 }
 }

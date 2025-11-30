@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\HistorialMedico;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use App\Exports\HistorialExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class HistorialMedicoController extends Controller
 {
@@ -108,4 +111,19 @@ class HistorialMedicoController extends Controller
 
         return redirect()->route('historial.index')->with('success', 'Historial eliminado correctamente');
     }
+
+    //excel
+
+
+
+
+
+public function export()
+{
+    $user = auth()->user();
+    $userId = ($user->rol !== 'admin') ? $user->id_usu : null;
+
+    return Excel::download(new HistorialExport($userId), 'historial.xlsx');
+}
+
 }
